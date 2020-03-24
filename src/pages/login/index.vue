@@ -1,0 +1,126 @@
+<template>
+	<view class="login">
+		<image src="../../static/logo.png" class="main-icon"></image>
+		<view class="input-group">
+			<input type="text" v-model="username" placeholder="请输入姓名.." class="username-input" placeholder-class="in-pla" />
+			<input type="number" v-model="studentid" placeholder="请输入学号.." class="stdid-input" placeholder-class="in-pla" />
+			<input password="true" v-model="password" placeholder="请输入密码.." class="psw-input" placeholder-class="in-pla" />
+		</view>
+		<button type="default" class="loginbtn" @click="login">登录</button>
+		<view class="tips">
+			<text>没有账号？前往</text>
+			<navigator url="./sign" class="a">注册</navigator>
+		</view>
+		<text class="watermark">From Mao Wennv ®</text>
+	</view>
+</template>
+
+<script>
+	import {
+		http
+	} from '../../utils/index.js'
+	import {
+		uniPopup
+	} from '@dcloudio/uni-ui'
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+
+	export default {
+		data() {
+			return {
+				username: '',
+				studentid: '',
+				password: '',
+			}
+		},
+		components: {
+			uniPopup
+		},
+		methods: {
+			login() {
+				if (this.username === '' || this.studentid === '' || this.password === '') {
+					uni.showToast({
+						title: '请把登录信息填写完整',
+						icon: 'none',
+						position: 'bottom',
+						duration: 1500
+					});
+				} else {
+					let data = {
+						username: this.username,
+						password: this.password,
+						number: this.studentid,
+						enable: '普通用户'
+					}
+					console.log(data)
+					this.$store.dispatch('login_asyn', data)
+				}
+
+			},
+		},
+		mounted() {
+			// http.get('/api/TreeHole').then(res => {
+			// 	console.log(res)
+			// }).catch(err => {
+			// 	console.log(err)
+			// })
+			// console.log(this.$store.state.a)
+		}
+
+	}
+</script>
+
+<style lang="scss">
+	.login {
+		height: 100vh;
+		width: 100vw;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+		padding-top: 50rpx;
+		box-sizing: border-box;
+	background-color: #FFFFCC;
+	position: relative;
+		.main-icon {
+			width: 400rpx;
+			height: 400rpx;
+		}
+
+		.input-group {
+
+			.stdid-input,
+			.username-input,
+			.psw-input {
+				border-bottom: 1px solid #65320B;
+				margin-bottom: 60rpx;
+				width: 600rpx
+			}
+		}
+
+		.loginbtn {
+			background-color: #CC9999;
+			width: 600rpx
+		}
+
+		.tips {
+			font-size: 12px;
+			margin-top: 30rpx;
+			display: flex;
+			justify-content: center;
+
+			.a {
+				text-decoration: underline;
+				font-weight: blod;
+			}
+		}
+
+		.popup {
+			background-color: #FFFFFF;
+			padding: 40rpx 60rpx;
+			border-radius: 10px;
+		}
+	}
+</style>

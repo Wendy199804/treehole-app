@@ -1,3 +1,4 @@
+
 <script>
 	export default {
 		onLaunch: function() {
@@ -13,5 +14,10 @@
 </script>
 
 <style>
-	/*每个页面公共css */
+.watermark{
+	position: absolute;
+	bottom: 0;
+	right: 20rpx;
+	font-size: 12px;
+}
 </style>
