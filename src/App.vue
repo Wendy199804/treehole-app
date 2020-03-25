@@ -3,6 +3,7 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -20,4 +21,7 @@
 	right: 20rpx;
 	font-size: 12px;
 }
+.uni-navbar__header, .uni-navbar__content_view{
+			width: 100%;
+		}
 </style>

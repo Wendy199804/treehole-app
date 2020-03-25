@@ -1,6 +1,7 @@
 <template>
 	<view class="sign">
-		<uni-nav-bar left-icon="back" left-text="返回" title="注册 Tree Hole 账号" @clickLeft="back"></uni-nav-bar>
+		<!-- <uni-nav-bar left-icon="back" title="注册 Tree Hole 账号" fixed="true" class="nav" @clickLeft="back"></uni-nav-bar> -->
+		<mynavbar :title=title :lefticon="lefticon" @leftEvent="leftEvent"></mynavbar>
 		<uni-popup ref="popup" type="center">
 			<view class="popup">
 				<text class="title">⚠注册需知</text>
@@ -43,6 +44,7 @@
 			</view>
 			<button type="default" class="signbtn" @click="sign">注册</button>
 		</view>
+		
 	</view>
 </template>
 
@@ -54,7 +56,7 @@
 		uniPopup
 	} from '@dcloudio/uni-ui'
 	import {http} from '../../utils/index.js'
-
+	import mynavbar from '../../components/navbar.vue'
 
 	export default {
 		data() {
@@ -72,7 +74,9 @@
 				replynamecheck: false,
 				studentidcheck: false,
 				passwordcheck: false,
-				sexcheck:false
+				sexcheck:false,
+				title:"注册 Tree Hole 账号",
+				lefticon:"back"
 			}
 		},
 		components: {
@@ -80,10 +84,11 @@
 			uniCombox,
 			uniIcons,
 			uniPopup,
+			mynavbar
 		},
 		methods: {
 			/*返回*/
-			back() {
+			leftEvent(){
 				uni.navigateBack({
 					delta: 1
 				})
@@ -268,5 +273,12 @@
 				margin-top: 30rpx;
 			}
 		}
+		.nav{
+			width: 100vw;
+		}
+		uni-view.uni-navbar__content.uni-navbar--fixed.uni-navbar--border,.uni-navbar--fixed[data-v-4e85c420],.uni-navbar__content[data-v-4e85c420] {
+			width: 100%;
+		}
+		
 	}
 </style>

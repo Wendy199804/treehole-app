@@ -1,7 +1,7 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/index/index", //启动页
 			"style": {
 				"app-plus": {
 					"titleNView": false
@@ -9,7 +9,7 @@
 			}
 		},
 		{
-			"path": "pages/login/index",
+			"path": "pages/login/index", //登录页
 			"style": {
 				"app-plus": {
 					"titleNView": false
@@ -17,7 +17,31 @@
 			}
 		},
 		{
-			"path": "pages/login/sign",
+			"path": "pages/login/sign", //注册页
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/home/index", //主页
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/more/index", //中间页
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/mine/index", //我的
 			"style": {
 				"app-plus": {
 					"titleNView": false
@@ -25,6 +49,31 @@
 			}
 		}
 	],
+	"tabBar": {
+		"color":"#777777",
+				"selectedColor":"#003300",
+		"backgroundColor": "#ffffff",
+		"iconWidth":"16px",
+		"list": [{
+				"pagePath": "pages/home/index",
+				"text":"首页",
+				"iconPath": "static/home.png",
+				"selectedIconPath": "static/home-active.png"
+			},
+			{
+				"pagePath": "pages/more/index",
+				"text":"更多",
+				"iconPath": "static/more.png",
+				"selectedIconPath": "static/more-active.png"
+			},
+			{
+				"pagePath": "pages/mine/index",
+				"text":"我的",
+				"iconPath": "static/me.png",
+				"selectedIconPath": "static/me-active.png"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
