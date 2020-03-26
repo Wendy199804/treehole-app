@@ -1,8 +1,7 @@
 <template>
 	<view class="navbar">
-		<view class="mask">
-			
-		</view>
+		<view class="mask"></view>
+		<view style="height: 30rpx;width:100%;position: fixed;top: 0;background-color: #FFFFFF;z-index: 999;"></view>
 		<view class="main">
 			<view class="nav-left" @click="leftEvent">
 				<view class="nav-left-icon" v-if="lefticon">
@@ -87,6 +86,7 @@
 		.mask{
 			width: 100%;
 			height: 118rpx;
+			background-color: #FFFFFF;
 		}
 		.main {
 			width: 100%;

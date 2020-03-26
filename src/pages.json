@@ -47,6 +47,14 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "components/treeholeItem", 
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"tabBar": {

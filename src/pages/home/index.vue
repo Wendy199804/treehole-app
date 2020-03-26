@@ -1,6 +1,6 @@
 <template>
 	<view class="home">
-	  <mynavbar :title="title"></mynavbar>
+		<mynavbar :title="title"></mynavbar>
 		<view class="write-module module">
 			<view class="write-item">
 				<view class="write-item-icon" style="background-color: #CC9999;">
@@ -27,71 +27,148 @@
 				<text>树洞</text>
 			</view>
 			<view class="application-module-item">
-				<image src="../../static/tree.png" class="icon"></image>
-				<text>树洞</text>
+				<image src="../../static/fishtank.png" class="icon"></image>
+				<text>水族箱</text>
 			</view>
 			<view class="application-module-item">
-				<image src="../../static/tree.png" class="icon"></image>
-				<text>树洞</text>
+				<image src="../../static/timecapsule.png" class="icon"></image>
+				<text>时间胶囊</text>
 			</view>
 			<view class="application-module-item">
-				<image src="../../static/tree.png" class="icon"></image>
-				<text>树洞</text>
+				<image src="../../static/question.png" class="icon"></image>
+				<text>每日问题</text>
 			</view>
-			<view class="application-module-item">
-				<image src="../../static/tree.png" class="icon"></image>
-				<text>树洞</text>
+			<view class="application-module-item" style="margin-top: 40rpx;">
+				<image src="../../static/moreitem.png" class="icon"></image>
+				<text>更多</text>
+			</view>
+		</view>
+
+		<view class="public-article-module module">
+			<text class="module-name">公开的树洞</text>
+			<uni-segmented-control :current="currenttab" :values="tabitems" @clickItem="onClickItem" style-type="text"
+			 active-color="#003300" class="tabnav"></uni-segmented-control>
+			<view class="content">
+				<view v-show="currenttab === 0">
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.moodlist" :key="item.topicID"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					></treeholeitem>
+				</view>
+				<view v-show="currenttab === 1">
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.troublelist" :key="item.topicID"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					></treeholeitem>
+				</view>
+				<view v-show="currenttab === 2">
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.teasinglist" :key="item.topicID"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					></treeholeitem>
+				</view>
+				<view v-show="currenttab === 3">
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.secretlist" :key="item.topicID"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					></treeholeitem>
+				</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	
 	import mynavbar from '../../components/navbar.vue'
-	import mystatusbar from '../../components/navbar.vue'
-	
-	export default{
-	data(){
-		return{
-			title:'Tree Hole',
-			
+	import treeholeitem from '../../components/treeholeItem.vue'
+	import {
+		uniSegmentedControl
+	} from '@dcloudio/uni-ui'
+	import {
+		http
+	} from '../../utils/index.js'
+
+	export default {
+		data() {
+			return {
+				title: 'Tree Hole',
+				tabitems: ['心情', '烦恼', '吐槽', '秘密'],
+				currenttab: 0,//当前选中的tab
+				tree_articlelist:{
+					moodlist:[],//心情 
+					troublelist:[],//烦恼
+					teasinglist:[],//吐槽
+					secretlist:[],//秘密
+				}
+				
+
+			}
+		},
+		components: {
+			mynavbar,
+			treeholeitem,
+			// mystatusbar
+			uniSegmentedControl
+		},
+		methods: {
+			/*切换选项卡*/
+			onClickItem(e) {
+				if (this.currenttab !== e.currentIndex) {
+					this.currenttab = e.currentIndex;
+				}
+				console.log(e)
+				if(e.currentIndex == 0){
+					this.getClassification(1,'moodlist')
+				}else if(e.currentIndex == 1){
+					this.getClassification(2,'troublelist')
+				}else if(e.currentIndex == 2){
+					this.getClassification(3,'teasinglist')
+				}else if(e.currentIndex == 3){
+					this.getClassification(4,'secretlist')
+				}
+			},
+			/*获取分类的树洞*/
+			getClassification(num,classes) {
+				http.post('/api/TreeClass',{class:num}).then(res => {
+					console.log(res.data)
+					this.tree_articlelist[classes]=res.data
+				})
+			}
+		},
+		beforeCreate(){
+			console.log()
+			http.post('/api/TreeClass',{class:1}).then(res => {
+				console.log(res.data)
+				this.tree_articlelist.moodlist=res.data
+			})
 		}
-	},
-	components:{
-		mynavbar,
-		mystatusbar
-	}
-	}
+		}
 </script>
 
 <style lang="scss">
-	.home{
+	.home {
 		background-color: #F5F5F5;
-		border: 1px solid red;
-		.module{
+
+		.module {
 			padding: 40rpx 50rpx;
 			box-sizing: border-box;
 			width: 100%;
 			margin-bottom: 30rpx;
 			background-color: #FFFFFF;
 		}
-		.write-module{
+
+		.write-module {
 			color: #333333;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			font-size: 14px;
-			border: 1px solid red;
-			
-			.write-item{
+
+			.write-item {
 				width: 20%;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
 				align-items: center;
 			}
-			.write-item-icon{
+
+			.write-item-icon {
 				width: 110rpx;
 				height: 110rpx;
 				border-radius: 50%;
@@ -99,29 +176,50 @@
 				justify-content: center;
 				align-items: center;
 				margin-bottom: 20rpx;
-				.icon{
+
+				.icon {
 					width: 60rpx;
 					height: 60rpx;
 				}
 			}
 		}
-		.application-module{
+
+		.application-module {
 			display: flex;
 			justify-content: space-between;
 			flex-wrap: wrap;
 			font-size: 14px;
-			.application-module-item{
+
+			.application-module-item {
 				width: 25%;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
 				align-items: center;
-				.icon{
-					width: 70rpx;
-					height: 70rpx;
+
+				.icon {
+					width: 60rpx;
+					height: 60rpx;
+					margin-bottom: 15rpx;
 				}
 			}
 		}
-		
+
+		.public-article-module {
+
+			.module-name {
+				font-size: 14px;
+			}
+
+			.tabnav {
+				margin-top: 10rpx;
+				font-size: 12px;
+			}
+
+			.content {
+				margin-top: 20rpx;
+				background-color: #F5F5F5;
+			}
+		}
 	}
 </style>
