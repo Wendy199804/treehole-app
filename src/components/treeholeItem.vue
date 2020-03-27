@@ -1,5 +1,5 @@
 <template>
-	<view class="treeholeItem">
+	<view class="treeholeItem" @click="toDetails">
 		<!--上部分-->
 		<view class="top">
 			<view class="head">
@@ -9,12 +9,14 @@
 				<text style="font-size: 15px;font-weight:800;">{{title}}</text>
 				<text>{{author}}</text>
 			</view>
-			
+<view class="time">
+				<text>{{newtime}}</text>
+			</view>
 		</view>
 		<!--内容部分-->
 		<view class="mycontent">
-				<!-- {{content}} -->
-				的接口方法的v反对v方法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对v方法v发v发v发v方法接口方法的v反对v方法v发v发v发v方法
+			<!-- {{content}} -->
+			的接口方法的v反对v方法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对v方法v发v发v发v方法接口方法的v反对v方法v发v发v发v方法
 		</view>
 		<!--下部分-->
 		<view class="function">
@@ -24,108 +26,129 @@
 			</view>
 			<view class="support">
 				<uni-fav :checked="checked" class="favBtn" circle="true" bg-color="#eeeeee" fg-color="#666666" fg-color-checked="#ffffff"
-				bg-color-checked="#EF5656" @click="onClick" :content-text="supporttext"
-				></uni-fav>
+				 bg-color-checked="#EF5656" @click.native.stop="support" :content-text="supporttext"></uni-fav>
 			</view>
-			<view class="time">
-				<text>{{time}}</text>
-			</view>
+			
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
-	import { uniFav } from '@dcloudio/uni-ui'
-	
+	import {
+		uniFav
+	} from '@dcloudio/uni-ui'
+	import calculateTime from '../utils/calculateTime.js'
+
 	export default {
-		data(){
-			return{
-				checked:false,  //是否支持
-				supporttext:{contentDefault: '支持',contentFav: '已支持'},  //支持文字
-				
+		data() {
+			return {
+				checked: false, //是否支持
+				supporttext: {
+					contentDefault: '支持',
+					contentFav: '已支持'
+				}, //支持文字
+				newtime:'',//格式化的日期
 			}
 		},
-		props:{
-			title:{
+		props: {
+			title: {
 				type: String,
 			},
-			author:{
-				type:String,
-			},
-			time:{
+			author: {
 				type: String,
 			},
-			content:{
+			time: {
 				type: String,
 			},
-			replynum:{
+			content: {
+				type: String,
+			},
+			replynum: {
 				type: String,
 			},
 		},
-		components:{
-			uniFav 
+		components: {
+			uniFav
 		},
-		methods:{
-			onClick(){
+		methods: {
+			/*点击支持*/
+			support() {
 				console.log("support")
-				this.checked=!this.checked
-			}
-		}
+				this.checked = !this.checked
+			},
+			/*打开详情*/
+			toDetails(){
+				uni.navigateTo({
+				    url: '../../pages/showdetails/details'
+				})
+			},
+		},
+		created(){
+			let newtime = this.time.split(' ')
+			this.newtime=calculateTime.calculateTime(newtime[0],newtime[1],'/',':')
+		},
+		
 	}
 </script>
 
 <style lang="scss">
-	.treeholeItem{
-		// border-top: 1px solid #cccccc;
+	.treeholeItem {
 		margin-bottom: 30rpx;
 		background-color: #FFFFFF;
-		
-		.headimg{
+
+		.headimg {
 			width: 100%;
 			height: 100%;
 		}
-		
-		.top{
+
+		.top {
 			width: 100%;
 			height: 100rpx;
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
 			font-size: 13px;
-			
-			.head{
+			position: relative;
+
+			.head {
 				width: 80rpx;
 				height: 80rpx;
 			}
-			.name{
+
+			.name {
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
 				align-items: flex-start;
-				padding-left:20rpx;
+				padding-left: 20rpx;
 				box-sizing: border-box;
 			}
-			
-			
+			.time {
+				position: absolute;
+				right: 10rpx;
+				top: 25rpx;
+				font-size: 12px;
+				color: #666666;
+			}
 		}
-		
-		.mycontent{
+
+		.mycontent {
 			width: 100%;
 			height: 252rpxs;
 			padding: 10rpx 20rpx 50rpx 20rpx;
 			box-sizing: border-box;
 			font-size: 14px;
-			 text-overflow: -o-ellipsis-lastline;
-			  overflow: hidden;
-			  text-overflow: ellipsis;
-			  display: -webkit-box;
-			  -webkit-line-clamp: 5;
-			  line-clamp: 5;
-			  -webkit-box-orient: vertical;
+			text-overflow: -o-ellipsis-lastline;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 5;
+			line-clamp: 5;
+			-webkit-box-orient: vertical;
 		}
-		
-		.function{
+
+		.function {
 			width: 90%;
 			height: 72rpx;
 			margin: 0 auto;
@@ -133,37 +156,35 @@
 			justify-content: space-between;
 			align-items: center;
 			border-top: 1px solid #cccccc;
-			position: relative;
-			
-			.reply,.support{
+
+			.reply,
+			.support {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 			}
-			.reply{
+
+			.reply {
 				width: 60%;
 			}
-			.support{
+
+			.support {
 				width: 30%;
 			}
-			.replyimg{
-				width: 35rpx;
-				height: 35rpx;
+
+			.replyimg {
+				width: 30rpx;
+				height: 30rpx;
 				margin-right: 10rpx;
 			}
-			.replynum{
+
+			.replynum {
 				font-size: 12px;
 				color: #666666;
-				margin-top: -2px;
+				margin-top: -3px;
 			}
+
 			
-			.time{
-				position: absolute;
-				right: 10rpx;
-				top: -40rpx;
-				font-size: 12px;
-				color: #666666;
-			}
 		}
 	}
 </style>

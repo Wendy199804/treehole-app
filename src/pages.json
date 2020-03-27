@@ -49,7 +49,7 @@
 			}
 		},
 		{
-			"path": "components/treeholeItem", 
+			"path": "pages/showdetails/details", //详情
 			"style": {
 				"app-plus": {
 					"titleNView": false

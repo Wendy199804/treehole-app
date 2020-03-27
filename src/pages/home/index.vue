@@ -35,8 +35,8 @@
 				<text>时间胶囊</text>
 			</view>
 			<view class="application-module-item">
-				<image src="../../static/question.png" class="icon"></image>
-				<text>每日问题</text>
+				<image src="../../static/search.png" class="icon"></image>
+				<text>搜索</text>
 			</view>
 			<view class="application-module-item" style="margin-top: 40rpx;">
 				<image src="../../static/moreitem.png" class="icon"></image>
@@ -129,6 +129,10 @@
 					console.log(res.data)
 					this.tree_articlelist[classes]=res.data
 				})
+			},
+			/*查看详情*/
+			details(){
+				console.log("details")
 			}
 		},
 		beforeCreate(){
@@ -206,7 +210,10 @@
 		}
 
 		.public-article-module {
-
+		.content-item{
+			box-shadow: 0 0 15px #666666;
+			border-radius: 10px;
+		}
 			.module-name {
 				font-size: 14px;
 			}
