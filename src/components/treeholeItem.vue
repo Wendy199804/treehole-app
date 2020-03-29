@@ -7,17 +7,14 @@
 			</view>
 			<view class="name">
 				<text style="font-size: 15px;font-weight:800;">{{title}}</text>
-				<text>{{author}}</text>
+				<text>创作者 - {{author}}</text>
 			</view>
 <view class="time">
 				<text>{{newtime}}</text>
 			</view>
 		</view>
 		<!--内容部分-->
-		<view class="mycontent">
-			<!-- {{content}} -->
-			的接口方法的v反对v方法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对法v发v发v发v方法v发v发接口方法的v反对v方法v发v发v发v方法接口方法的v反对v方法v发v发v发v方法
-		</view>
+		<view class="mycontent" v-html="content"></view>
 		<!--下部分-->
 		<view class="function">
 			<view class="reply">
@@ -39,7 +36,10 @@
 		uniFav
 	} from '@dcloudio/uni-ui'
 	import calculateTime from '../utils/calculateTime.js'
-
+	import {
+		http
+	} from '../utils/index.js'
+	
 	export default {
 		data() {
 			return {
@@ -49,6 +49,7 @@
 					contentFav: '已支持'
 				}, //支持文字
 				newtime:'',//格式化的日期
+				nickname:'',//当前用户的nickname
 			}
 		},
 		props: {
@@ -67,6 +68,9 @@
 			replynum: {
 				type: String,
 			},
+			topicid: {
+				type: String,
+			},
 		},
 		components: {
 			uniFav
@@ -74,19 +78,35 @@
 		methods: {
 			/*点击支持*/
 			support() {
-				console.log("support")
 				this.checked = !this.checked
+				let a = {topicid:this.topicid,nickname:this.nickname}
+				http.post('/api/Support',{topicid:this.topicid,nickname:this.nickname}).then(res => {
+					console.log(res)
+						uni.showToast({
+							title: res.data,
+							icon: 'none',
+							position: 'bottom',
+							duration: 1500
+						})
+				},err => {
+					uni.showToast({
+						title: err.data,
+						icon: 'none',
+						position: 'bottom',
+						duration: 1500
+					})
+				})
 			},
 			/*打开详情*/
 			toDetails(){
-				uni.navigateTo({
-				    url: '../../pages/showdetails/details'
-				})
+				this.$emit('toDetails')
+				
 			},
 		},
 		created(){
 			let newtime = this.time.split(' ')
 			this.newtime=calculateTime.calculateTime(newtime[0],newtime[1],'/',':')
+			this.nickname = uni.getStorageSync('user').nickname
 		},
 		
 	}
@@ -135,9 +155,10 @@
 
 		.mycontent {
 			width: 100%;
-			height: 252rpxs;
-			padding: 10rpx 20rpx 50rpx 20rpx;
+			max-height: 208rpx;
+			padding: 10rpx 30rpx 0rpx 30rpx;
 			box-sizing: border-box;
+			margin-bottom: 10rpx;
 			font-size: 14px;
 			text-overflow: -o-ellipsis-lastline;
 			overflow: hidden;

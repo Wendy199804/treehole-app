@@ -46,7 +46,7 @@
 						icon: 'none',
 						position: 'bottom',
 						duration: 1500
-					});
+					})
 				} else {
 					let data = {
 						username: this.username,
@@ -61,13 +61,10 @@
 			},
 		},
 		mounted() {
-			// http.get('/api/TreeHole').then(res => {
-			// 	console.log(res)
-			// }).catch(err => {
-			// 	console.log(err)
-			// })
-			// console.log(this.$store.state.a)
-		}
+				uni.switchTab({
+					url:'../home/index'
+				})
+		},
 
 	}
 </script>

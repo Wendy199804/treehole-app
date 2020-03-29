@@ -19,13 +19,15 @@
 			 active-color="#003300" class="tabnav"></uni-segmented-control>
 			<view class="content">
 				<view v-show="currenttab === 0">
-					<treeholeitem class="content-item" v-for="item in tree_articlelist.publist" :key="item.topicID"
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.publist" :key="item.topicID" 
 					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					 @toDetails="toDetails(item.topicID,item.nickName)"
 					></treeholeitem>
 				</view>
 				<view v-show="currenttab === 1">
 					<treeholeitem class="content-item" v-for="item in tree_articlelist.anonymouslist" :key="item.topicID"
 					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					 @toDetails="toDetails(item.topicID,item.nickName)"
 					></treeholeitem>
 				</view>
 			</view>
@@ -82,17 +84,35 @@
 				}
 				console.log(e)
 			},
-			
+			/*查看详情*/
+			toDetails(topicid,nickname){
+				http.post('/api/TreeDetails',{topicid}).then(res => {
+					console.log(res.data[0])
+					uni.setStorage({
+						key:'topicdetail',
+						data:res.data[0],
+						success: () => {
+							uni.navigateTo({
+							    url: `../../pages/showdetails/details?mynickname=${this.nickname}&topicid=${topicid}&itnickname=${nickname}`
+							})
+						}
+					})
+				},(err) => {
+					console.log(err)
+				})
+			},
 		},
 		created(){
+			let userinfo = uni.getStorageSync('user')
+			this.nickname = userinfo.nickname
 			/*获取树洞列表*/
-			http.post('/api/UserTreeName',{nickname:'发表昵称'}).then(res => {
+			http.post('/api/UserTreeName',{nickname:this.nickname}).then(res => {
 				console.log(res.data)
 				this.tree_articlelist.publist=res.data
 			},(err)=>{
 				console.log(err)
 			})
-			http.post('/api/UserTreeNotName',{nickname:'发表昵称'}).then(res => {
+			http.post('/api/UserTreeNotName',{nickname:this.nickname}).then(res => {
 				console.log(res.data)
 				this.tree_articlelist.anonymouslist=res.data
 			},(err)=>{
@@ -116,7 +136,7 @@
 		
 		.article-module {
 			.content-item{
-				box-shadow: 0 0 15px #666666;
+				box-shadow: 0 0 10px #C0C0C0;
 				border-radius: 10px;
 			}
 			.tabnav {

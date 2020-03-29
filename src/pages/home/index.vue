@@ -22,7 +22,7 @@
 			</view>
 		</view>
 		<view class="application-module module">
-			<view class="application-module-item">
+			<view class="application-module-item" @click="postTreehole">
 				<image src="../../static/tree.png" class="icon"></image>
 				<text>树洞</text>
 			</view>
@@ -50,23 +50,23 @@
 			 active-color="#003300" class="tabnav"></uni-segmented-control>
 			<view class="content">
 				<view v-show="currenttab === 0">
-					<treeholeitem class="content-item" v-for="item in tree_articlelist.moodlist" :key="item.topicID"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.moodlist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
 					></treeholeitem>
 				</view>
 				<view v-show="currenttab === 1">
-					<treeholeitem class="content-item" v-for="item in tree_articlelist.troublelist" :key="item.topicID"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.troublelist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
 					></treeholeitem>
 				</view>
 				<view v-show="currenttab === 2">
-					<treeholeitem class="content-item" v-for="item in tree_articlelist.teasinglist" :key="item.topicID"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.teasinglist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
 					></treeholeitem>
 				</view>
 				<view v-show="currenttab === 3">
-					<treeholeitem class="content-item" v-for="item in tree_articlelist.secretlist" :key="item.topicID"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					<treeholeitem class="content-item" v-for="item in tree_articlelist.secretlist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
+					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
 					></treeholeitem>
 				</view>
 			</view>
@@ -95,9 +95,8 @@
 					troublelist:[],//烦恼
 					teasinglist:[],//吐槽
 					secretlist:[],//秘密
-				}
-				
-
+				},
+				nickname:'',//当前nickname
 			}
 		},
 		components: {
@@ -131,17 +130,44 @@
 				})
 			},
 			/*查看详情*/
-			details(){
-				console.log("details")
+			toDetails(topicid,nickname){
+				http.post('/api/TreeDetails',{topicid}).then(res => {
+					console.log(res.data[0])
+					uni.setStorage({
+						key:'topicdetail',
+						data:res.data[0],
+						success: () => {
+							uni.navigateTo({
+							    url: `../../pages/showdetails/details?mynickname=${this.nickname}&topicid=${topicid}&itnickname=${nickname}`
+							})
+						}
+					})
+				},(err) => {
+					console.log(err)
+				})
+			},
+			/*查看树洞*/
+			postTreehole(){
+				console.log('查看树洞')
+				uni.navigateTo({
+					url:`./privateTopic?mynickname=${this.nickname}`
+				})
 			}
 		},
 		beforeCreate(){
-			console.log()
+			//预加载
 			http.post('/api/TreeClass',{class:1}).then(res => {
 				console.log(res.data)
 				this.tree_articlelist.moodlist=res.data
 			})
-		}
+		},
+		created() {
+			let userinfo = uni.getStorageSync('user')
+			this.nickname = userinfo.nickname
+			// http.post('/api/SupportList',{nickname:this.nickname}).then(res => {
+			// 	console.log(res.data)
+			// })
+		},
 		}
 </script>
 
@@ -211,7 +237,7 @@
 
 		.public-article-module {
 		.content-item{
-			box-shadow: 0 0 15px #666666;
+			box-shadow: 0 0 10px #C0C0C0;
 			border-radius: 10px;
 		}
 			.module-name {

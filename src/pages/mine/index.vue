@@ -2,25 +2,25 @@
 	<view class="mine">
 		<mynavbar :title="title"></mynavbar>
 
-		<view class="module me-head-module">
+		<view class="module me-head-module" @click="clickMyinfo" @touchstart="touchMyinfo" @touchend="touchMyinfoend" :style="[{background: bgcolor}]">
 			<view class="headimg">
 				<image src="../../static/head-portrait.png" class="image"></image>
 			</view>
 			<view class="headinfo">
-				<text style="font-size: 17px;color: #000000;">用户名username</text>
+				<text style="font-size: 17px;color: #000000;">{{userinfo.username}}</text>
 				<text style="font-size: 13px;color: #999999;">欢迎加入Tree Hole大家庭~~</text>
 			</view>
 			<image src="../../static/next.png" class="nexticon"></image>
 		</view>
 
 		<uni-list style="margin-bottom: 30rpx;">
-			<uni-list-item title="我得到的支持" @click="clickSet" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'heart'}"></uni-list-item>
+			<uni-list-item title="收获的支持" @click="clickGetsupport" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'heart'}"></uni-list-item>
 		</uni-list>
 		<uni-list>
-			<uni-list-item title="我送出的支持" @click="clickSet" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'star'}"></uni-list-item>
+			<uni-list-item title="送出的支持" @click="clickSetsupport" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'star'}"></uni-list-item>
 		</uni-list>
 		<uni-list>
-			<uni-list-item title="我的回复" @click="clickSet" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'chatbubble'}"></uni-list-item>
+			<uni-list-item title="发表的回复" @click="clickReply" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'chatbubble'}"></uni-list-item>
 		</uni-list>
 		<uni-list style="margin-top: 30rpx;">
 			<uni-list-item title="设置" @click="clickSet" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'gear'}"></uni-list-item>
@@ -35,12 +35,16 @@
 		uniListItem,
 		uniIcons
 	} from '@dcloudio/uni-ui'
+	import {
+		http
+	} from '../../utils/index.js'
 
 	export default {
 		data() {
 			return {
-				title: 'More',
-
+				title: '我的',
+				userinfo:'',
+				bgcolor:''
 			}
 		},
 		components: {
@@ -50,6 +54,20 @@
 			uniIcons
 		},
 		methods: {
+			/*点击我的资料*/
+			clickMyinfo(){
+				uni.navigateTo({
+					url:'./userinfo'
+				})
+			},
+			/*触摸我的资料@touchstart*/
+			touchMyinfo(){
+				this.bgcolor = '#F1F1F1'
+			},
+			/*触摸我的资料@touchend*/
+			touchMyinfoend(){
+				this.bgcolor = '#FFFFFF'
+			},
 			/*点击设置*/
 			clickSet() {
 				console.log("点击了设置")
@@ -57,15 +75,45 @@
 			/*点击送出的支持*/
 			clickSetsupport() {
 				console.log("点击了送出的支持")
+				// console.log(this.userinfo.nickname)
+				uni.navigateTo({
+					url:`./mysupport?nickname=${this.userinfo.nickname}`
+				})
 			},
-			/*点击回复*/
+			/*点击我的回复*/
 			clickReply() {
-				console.log("点击了回复")
+				console.log("点击了我的回复")
+				uni.navigateTo({
+					url:`./myreply?nickname=${this.userinfo.nickname}`
+				})
 			},
 			/*点击得到的支持*/
 			clickGetsupport() {
 				console.log("点击了得到的支持")
+				uni.navigateTo({
+					url:`./mynewsupport?nickname=${this.userinfo.nickname}`
+				})
 			},
+		},
+		beforeCreate() {
+			
+		},
+		created(){
+			  this.userinfo = uni.getStorageSync('user')
+			  console.log(this.userinfo)
+				
+		},
+		onShow() {
+			/*查看是否有新的支持（对我）*/
+			http.post('/api/SupportFlag',{nickname:this.userinfo.nickname}).then(res => {
+				if(res.data == 'nosupport'){
+					console.log('没有新的支持')
+				}else if(res.data == 'newsupport'){
+					console.log('有新的支持')
+				}
+			},err => {
+				console.log(err)
+			})
 		}
 	}
 </script>
@@ -74,7 +122,7 @@
 	.mine {
 		height: 100vh;
 		background-color: #F5F5F5;
-		color: #333333;
+		color: #003300;
 
 		.me-head-module {
 			display: flex;

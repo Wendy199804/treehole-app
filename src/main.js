@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
-// import Vuex from 'vuex'
-// Vue.use(Vuex)
+
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+// require styles
+import 'swiper/css/swiper.css'
+
+Vue.use(VueAwesomeSwiper, /* { default global options } */)
+
 Vue.prototype.$store = store 
 Vue.config.productionTip = false
 
