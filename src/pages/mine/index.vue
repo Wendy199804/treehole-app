@@ -71,6 +71,9 @@
 			/*点击设置*/
 			clickSet() {
 				console.log("点击了设置")
+				uni.navigateTo({
+					url:`./setting?nickname=${this.userinfo.nickname}`
+				})
 			},
 			/*点击送出的支持*/
 			clickSetsupport() {

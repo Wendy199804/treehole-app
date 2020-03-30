@@ -21,7 +21,9 @@ const store = new Vuex.Store({
 	actions: {
 		/*登录*/
 		login_asyn(context, params) {
+			
 			http.post('/api/User', params).then(res => {
+				console.log(res.data)
 				if (res.data.length == 0) { //接口没准备好才这么写的！！要记得改成  !==0
 					uni.showToast({
 						title: '用户名密码有误',
@@ -46,6 +48,7 @@ const store = new Vuex.Store({
 							context.commit('login',res.data[0])
 						}
 					})
+					
 				}
 			}).catch(err => {
 				console.log(err)

@@ -111,7 +111,16 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/mine/setting", //设置
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
+		
 	],
 	"tabBar": {
 		"color":"#777777",

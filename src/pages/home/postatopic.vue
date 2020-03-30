@@ -2,9 +2,9 @@
 	<view class="post-article">
 		<mynavbar :title="title" :lefticon="back" @leftEvent="Back"></mynavbar>
 		<view class="edit-article">
-			<input type="text" placeholder="标题" class="edit-input"/>
+			<input type="text" placeholder="标题(最多10个字符)" class="edit-input" maxlength="10"/>
 			<view class="container">
-				<editor id="editor" class="ql-container" :placeholder="placeholder" @ready="onEditorReady" @blur="blur"></editor>
+				<editor id="editor" class="ql-container" placeholder="告诉我你的想法吧..." @ready="onEditorReady" @blur="blur"></editor>
 				<button type="warn" @tap="undo">撤销</button>
 			</view>
 		</view>
@@ -55,5 +55,18 @@
 </script>
 
 <style lang="scss">
-	.post-article {}
+	.post-article {
+		background-color: #f5;
+		.edit-input{
+			height: 80rpx;
+			border-bottom: 1px solid #C0C0C0;
+			padding: 20rpx;
+			box-sizing: border-box;
+		}
+		.ql-container{
+			padding: 20rpx;
+			box-sizing: border-box;
+			border: 1px solid red;
+			}
+	}
 </style>
