@@ -21,13 +21,13 @@
 				<view v-show="currenttab === 0">
 					<treeholeitem class="content-item" v-for="item in tree_articlelist.publist" :key="item.topicID" 
 					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
-					 @toDetails="toDetails(item.topicID,item.nickName)"
+					 @toDetails="toDetails(item.topicID,item.nickName)" :checked="item.flag" @success="item.flag=!item.flag"
 					></treeholeitem>
 				</view>
 				<view v-show="currenttab === 1">
 					<treeholeitem class="content-item" v-for="item in tree_articlelist.anonymouslist" :key="item.topicID"
 					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
-					 @toDetails="toDetails(item.topicID,item.nickName)"
+					 @toDetails="toDetails(item.topicID,item.nickName)" :checked="item.flag" @success="item.flag=!item.flag"
 					></treeholeitem>
 				</view>
 			</view>
@@ -105,18 +105,39 @@
 		created(){
 			let userinfo = uni.getStorageSync('user')
 			this.nickname = userinfo.nickname
-			/*获取树洞列表*/
-			http.post('/api/UserTreeName',{nickname:this.nickname}).then(res => {
-				console.log(res.data)
-				this.tree_articlelist.publist=res.data
-			},(err)=>{
-				console.log(err)
+
+			http.post('/api/UserTreeName', {nickname:this.nickname}).then(res1 => {
+				http.post('/api/SupportList', {
+					nickname: this.nickname
+				}).then(res2 => {
+					if (res2.data.length !== 0) {
+						let newarr1 = res1.data.map(item1 => {
+							item1.flag = res2.data.some(item2 => item1.topicID === item2.topicID) 
+								return item1
+						})
+						this.tree_articlelist.publist = newarr1
+					}else{
+						this.tree_articlelist.publist = res1.data
+					}
+					console.log(this.tree_articlelist.publist)
+				})
 			})
-			http.post('/api/UserTreeNotName',{nickname:this.nickname}).then(res => {
-				console.log(res.data)
-				this.tree_articlelist.anonymouslist=res.data
-			},(err)=>{
-				console.log(err)
+			
+			http.post('/api/UserTreeNotName', {nickname:this.nickname}).then(res1 => {
+				http.post('/api/SupportList', {
+					nickname: this.nickname
+				}).then(res2 => {
+					if (res2.data.length !== 0) {
+						let newarr1 = res1.data.map(item1 => {
+							item1.flag = res2.data.some(item2 => item1.topicID === item2.topicID) 
+								return item1
+						})
+						this.tree_articlelist.anonymouslist = newarr1
+					}else{
+						this.tree_articlelist.anonymouslist = res1.data
+					}
+					console.log(this.tree_articlelist.anonymouslist)
+				})
 			})
 		},
 	}

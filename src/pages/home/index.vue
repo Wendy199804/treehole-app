@@ -51,23 +51,23 @@
 			<view class="content">
 				<view v-show="currenttab === 0">
 					<treeholeitem class="content-item" v-for="item in tree_articlelist.moodlist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
-					></treeholeitem>
+					 :title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					 :topicid="item.topicID" :checked="item.flag" @success="item.flag=!item.flag"></treeholeitem>
 				</view>
 				<view v-show="currenttab === 1">
 					<treeholeitem class="content-item" v-for="item in tree_articlelist.troublelist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
-					></treeholeitem>
+					 :title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					 :topicid="item.topicID" :checked="item.flag" @success="item.flag=!item.flag"></treeholeitem>
 				</view>
 				<view v-show="currenttab === 2">
 					<treeholeitem class="content-item" v-for="item in tree_articlelist.teasinglist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
-					></treeholeitem>
+					 :title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					 :topicid="item.topicID" :checked="item.flag" @success="item.flag=!item.flag"></treeholeitem>
 				</view>
 				<view v-show="currenttab === 3">
 					<treeholeitem class="content-item" v-for="item in tree_articlelist.secretlist" :key="item.topicID" @toDetails="toDetails(item.topicID,item.nickName)"
-					:title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount" :topicid="item.topicID"
-					></treeholeitem>
+					 :title="item.title" :author="item.nickName" :time="item.time" :content="item.contentery" :replynum="item.replyCount"
+					 :topicid="item.topicID" :checked="item.flag" @success="item.flag=!item.flag"></treeholeitem>
 				</view>
 			</view>
 		</view>
@@ -89,14 +89,14 @@
 			return {
 				title: 'Tree Hole',
 				tabitems: ['心情', '烦恼', '吐槽', '秘密'],
-				currenttab: 0,//当前选中的tab
-				tree_articlelist:{
-					moodlist:[],//心情 
-					troublelist:[],//烦恼
-					teasinglist:[],//吐槽
-					secretlist:[],//秘密
+				currenttab: 0, //当前选中的tab
+				tree_articlelist: {
+					moodlist: [], //心情 
+					troublelist: [], //烦恼
+					teasinglist: [], //吐槽
+					secretlist: [], //秘密
 				},
-				nickname:'',//当前nickname
+				nickname: '', //当前nickname
 			}
 		},
 		components: {
@@ -112,53 +112,77 @@
 					this.currenttab = e.currentIndex;
 				}
 				console.log(e)
-				if(e.currentIndex == 0){
-					this.getClassification(1,'moodlist')
-				}else if(e.currentIndex == 1){
-					this.getClassification(2,'troublelist')
-				}else if(e.currentIndex == 2){
-					this.getClassification(3,'teasinglist')
-				}else if(e.currentIndex == 3){
-					this.getClassification(4,'secretlist')
+				if (e.currentIndex == 0) {
+					this.getClassification(1, 'moodlist')
+				} else if (e.currentIndex == 1) {
+					this.getClassification(2, 'troublelist')
+				} else if (e.currentIndex == 2) {
+					this.getClassification(3, 'teasinglist')
+				} else if (e.currentIndex == 3) {
+					this.getClassification(4, 'secretlist')
 				}
 			},
 			/*获取分类的树洞*/
-			getClassification(num,classes) {
-				http.post('/api/TreeClass',{class:num}).then(res => {
-					console.log(res.data)
-					this.tree_articlelist[classes]=res.data
+			getClassification(num, classes) {
+				// http.post('/api/TreeClass', {
+				// 	class: num
+				// }).then(res => {
+				// 	console.log(res.data)
+				// 	this.tree_articlelist[classes] = res.data
+				// })
+				http.post('/api/TreeClass', {
+					class: num
+				}).then(res1 => {
+					http.post('/api/SupportList', {
+						nickname: this.nickname
+					}).then(res2 => {
+						if (res2.data.length !== 0) {
+							let newarr1 = res1.data.map(item1 => {
+								item1.flag = res2.data.some(item2 => item1.topicID === item2.topicID) 
+									return item1
+							})
+							this.tree_articlelist[classes] = newarr1
+						}else{
+							this.tree_articlelist[classes] = res1.data
+						}
+						console.log(this.tree_articlelist[classes])
+					})
 				})
 			},
 			/*查看详情*/
-			toDetails(topicid,nickname){
-				http.post('/api/TreeDetails',{topicid}).then(res => {
+			toDetails(topicid, nickname) {
+				http.post('/api/TreeDetails', {
+					topicid
+				}).then(res => {
 					console.log(res.data[0])
 					uni.setStorage({
-						key:'topicdetail',
-						data:res.data[0],
+						key: 'topicdetail',
+						data: res.data[0],
 						success: () => {
 							uni.navigateTo({
-							    url: `../../pages/showdetails/details?mynickname=${this.nickname}&topicid=${topicid}&itnickname=${nickname}`
+								url: `../../pages/showdetails/details?mynickname=${this.nickname}&topicid=${topicid}&itnickname=${nickname}`
 							})
 						}
 					})
-				},(err) => {
+				}, (err) => {
 					console.log(err)
 				})
 			},
 			/*查看树洞*/
-			postTreehole(){
+			postTreehole() {
 				console.log('查看树洞')
 				uni.navigateTo({
-					url:`./privateTopic?mynickname=${this.nickname}`
+					url: `./privateTopic?mynickname=${this.nickname}`
 				})
 			}
 		},
-		beforeCreate(){
-			//预加载
-			http.post('/api/TreeClass',{class:1}).then(res => {
-				console.log(res.data)
-				this.tree_articlelist.moodlist=res.data
+		beforeCreate() {
+
+			let date = new Date()
+			let logintime = date.getTime()
+			uni.setStorage({
+				key: 'logintime',
+				data: logintime
 			})
 		},
 		created() {
@@ -167,8 +191,29 @@
 			// http.post('/api/SupportList',{nickname:this.nickname}).then(res => {
 			// 	console.log(res.data)
 			// })
+			//预加载
+			http.post('/api/TreeClass', {
+				class: 1
+			}).then(res1 => {
+				http.post('/api/SupportList', {
+					nickname: this.nickname
+				}).then(res2 => {
+					if (res2.data.length !== 0) {
+						let newarr1 = res1.data.map(item1 => {
+							item1.flag = res2.data.some(item2 => item1.topicID === item2.topicID) 
+								return item1
+						})
+						this.tree_articlelist.moodlist = newarr1
+					}else{
+						this.tree_articlelist.moodlist = res1.data
+					}
+					console.log(this.tree_articlelist.moodlist)
+				})
+			})
+
+
 		},
-		}
+	}
 </script>
 
 <style lang="scss">
@@ -236,10 +281,11 @@
 		}
 
 		.public-article-module {
-		.content-item{
-			box-shadow: 0 0 10px #C0C0C0;
-			border-radius: 10px;
-		}
+			.content-item {
+				box-shadow: 0 0 10px #C0C0C0;
+				border-radius: 10px;
+			}
+
 			.module-name {
 				font-size: 14px;
 			}

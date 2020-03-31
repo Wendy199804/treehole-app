@@ -21,7 +21,7 @@
 						<view class="" v-for="item in supportList" :key="item.topicID" @click="toDetails(item.topicID,item.nickName)">
 							<uni-card :title="item.title" mode="title" :is-shadow="true" thumbnail="../../static/head-portrait.png"
 							 :extra="item.time" :note="item.nickName">
-								{{item.contentery}}
+								<view class="" v-html="item.contentery"></view>
 							</uni-card>
 						</view>
 					</view>
@@ -34,7 +34,7 @@
 						<view class="" v-for="item in supportnonameList" :key="item.topicID" @click="toDetails(item.topicID,item.nickName)">
 							<uni-card :title="item.title" mode="title" :is-shadow="true" thumbnail="../../static/head-portrait.png"
 							 :extra="item.time" :note="item.nickName">
-								{{item.contentery}}
+								<view class="" v-html="item.contentery"></view>
 							</uni-card>
 						</view>
 					</view>

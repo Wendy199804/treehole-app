@@ -30,8 +30,8 @@
 							<text class="title">{{item.title}}</text>
 							<view class="desc" v-html="item.contentery"></view>
 							<view class="support">
-								<uni-fav :checked="false" class="favBtn" circle="true" bg-color="#eeeeee" fg-color="#666666" fg-color-checked="#ffffff"
-								 bg-color-checked="#EF5656" @click.native.stop="support" :content-text="supporttext"></uni-fav>
+								<uni-fav :checked="item.flag" class="favBtn" circle="true" bg-color="#eeeeee" fg-color="#666666" fg-color-checked="#ffffff"
+								 bg-color-checked="#EF5656" @click.native.stop="support(item.topicID,i)" :content-text="supporttext"></uni-fav>
 							</view>
 						</view>
         </view>
@@ -47,9 +47,15 @@
 	import {
 		uniFav
 	} from '@dcloudio/uni-ui'
+	import {
+		http
+	} from '../utils/index.js'
 	
 export default {
   props: {
+		mynickname:{
+			type:String
+		},
 	bannerList: {
 		type: Array,
 		default () {
@@ -122,7 +128,28 @@ export default {
 		// duration: 2000,
 		// mask: true
 	 //  })
-    }
+    },
+		/*点击支持*/
+		support(topicid,index) {
+			// this.checked = !this.checked
+			this.$emit('succeed',index)
+			http.post('/api/Support',{topicid,nickname:this.mynickname}).then(res => {
+				console.log(res)
+					uni.showToast({
+						title: res.data,
+						icon: 'none',
+						position: 'bottom',
+						duration: 1500
+					})
+			},err => {
+				uni.showToast({
+					title: err.data,
+					icon: 'none',
+					position: 'bottom',
+					duration: 1500
+				})
+			})
+		},
   }
 }
 </script>

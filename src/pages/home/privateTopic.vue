@@ -2,7 +2,8 @@
 	<view class="private-topic">
 		<mynavbar :title="title" :lefticon="back" @leftEvent="Back"></mynavbar>
 		<view class="swiperbox">
-			<specialbanner :banner-list="bannerList" :swiper-config="swiperConfig" @getBannerDetail="getBannerDetail"></specialbanner>
+			<specialbanner :banner-list="bannerList" :swiper-config="swiperConfig" :mynickname="mynickname" 
+			@getBannerDetail="getBannerDetail" @succeed="succeed"></specialbanner>
 			
 		</view>
 		<view class="derec-text">
@@ -73,13 +74,33 @@
 					url:`./postatopic?mynickname=${this.mynickname}`
 				})
 			},
+			succeed(index){
+				this.bannerList[index].flag = !this.bannerList[index].flag
+			}
 		},
 		onLoad(option) {
 			this.mynickname = option.mynickname
-			http.get('/api/TreeHoleNotName').then(res => {
-				console.log(res)
-				this.bannerList = res.data
-				console.log(this.bannerList)
+			// http.get('/api/TreeHoleNotName').then(res => {
+			// 	console.log(res)
+			// 	this.bannerList = res.data
+			// 	console.log(this.bannerList)
+			// })
+			
+			http.get('/api/TreeHoleNotName').then(res1 => {
+				http.post('/api/SupportListNotName', {
+					nickname: this.mynickname
+				}).then(res2 => {
+					if (res2.data.length !== 0) {
+						let newarr1 = res1.data.map(item1 => {
+							item1.flag = res2.data.some(item2 => item1.topicID === item2.topicID) 
+								return item1
+						})
+						this.bannerList = newarr1
+					}else{
+						this.bannerList = res1.data
+					}
+					console.log(this.bannerList)
+				})
 			})
 		},
 

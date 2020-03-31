@@ -10,7 +10,7 @@
 			<view class="repitem" v-for="(item,index) in myreplyList" :key="index">
 				<view class="left">
 					<view class="repobj">
-						<text style="color: #993333;">@TA</text><text>: {{item.title}}</text>
+						<text style="color: #993333;">@{{item.nickName}}</text><text>: {{item.title}}</text>
 						<view class="repobj-content">
 							内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容
 						</view>
@@ -22,7 +22,7 @@
 
 				<view class="right">
 					<view class="myrep">
-						<text>回复</text><text style="color: #336633;">@TA</text><text>: {{item.reContentery}}</text>
+						<text>回复</text><text style="color: #336633;">@{{item.nickName}}</text><text>: {{item.reContentery}}</text>
 						<view class="myrep-time">
 							<text>{{item.createdOn}}</text>
 						</view>
@@ -131,6 +131,9 @@
 			.myrep-time,
 			.repobj-time {
 				font-size: 12px;
+			}
+			.myrep-time{
+				text-align: right;
 			}
 		}
 	}

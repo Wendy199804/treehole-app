@@ -14,7 +14,9 @@
 		</view>
 
 		<uni-list style="margin-bottom: 30rpx;">
-			<uni-list-item title="收获的支持" @click="clickGetsupport" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'heart'}"></uni-list-item>
+			<uni-list-item title="收获的支持" @click="clickGetsupport" showExtraIcon="true" 
+			:extraIcon="{color: '#003300',size: '22',type: 'heart'}" :show-badge="hasNewSupport" 
+			badge-text="newSupportnum" badgeType="error"></uni-list-item>
 		</uni-list>
 		<uni-list>
 			<uni-list-item title="送出的支持" @click="clickSetsupport" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'star'}"></uni-list-item>
@@ -44,7 +46,9 @@
 			return {
 				title: '我的',
 				userinfo:'',
-				bgcolor:''
+				bgcolor:'',
+				newSupportnum:'',
+				hasNewSupport:false
 			}
 		},
 		components: {
@@ -102,21 +106,35 @@
 			
 		},
 		created(){
-			  this.userinfo = uni.getStorageSync('user')
-			  console.log(this.userinfo)
-				
+			  
 		},
 		onShow() {
+			this.userinfo = uni.getStorageSync('user')
+			// console.log(this.userinfo)
 			/*查看是否有新的支持（对我）*/
 			http.post('/api/SupportFlag',{nickname:this.userinfo.nickname}).then(res => {
-				if(res.data == 'nosupport'){
+				console.log(res)
+				if(res.data == 0){
 					console.log('没有新的支持')
-				}else if(res.data == 'newsupport'){
+					this.hasNewSupport = false
+				}else if(res.data > 0){
 					console.log('有新的支持')
+					this.hasNewSupport = true
 				}
+				this.newSupportnum = rea.data
 			},err => {
 				console.log(err)
 			})
+			
+			// http.post('/api/SupportFlagClean',{nickname:this.userinfo.nickname}).then(res => {
+			// 	if(res.data == 'success'){
+			// 		console.log('已查看')
+			// 	}else{
+			// 		console.log(res.data)
+			// 	}
+			// },err => {
+			// 	console.log(err)
+			// })
 		}
 	}
 </script>
@@ -126,6 +144,11 @@
 		height: 100vh;
 		background-color: #F5F5F5;
 		color: #003300;
+		
+		.uni-badge--success[data-v-50168758]  {
+			background-color: #D13438;
+			width: auto;
+		}
 
 		.me-head-module {
 			display: flex;

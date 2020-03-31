@@ -11,13 +11,13 @@
 						<text class="info-name">{{detailinfo.nickName}}</text>
 						<text class="info-time">{{detailinfo.time}}</text>
 					</view>
-					<uni-fav :checked="checked" class="supportbtn" circle="true" bg-color="#EEEEEE" bg-color-checked="#EF5656"
-					 :content-text='contenttext' @click="onClick"></uni-fav>
+					<!-- <uni-fav :checked="checked" class="supportbtn" circle="true" bg-color="#EEEEEE" bg-color-checked="#EF5656"
+					 :content-text='contenttext' @click="onClick"></uni-fav> -->
 				</view>
 
 				<view class="content">
 					<text class="content-title">标题：{{detailinfo.title}}</text>
-					<text class="content-contentery">{{detailinfo.contentery}}</text>
+					<text class="content-contentery" v-html="detailinfo.contentery"></text>
 				</view>
 			</view>
 

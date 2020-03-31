@@ -43,7 +43,7 @@
 	export default {
 		data() {
 			return {
-				checked: false, //是否支持
+				// checked: false, //是否支持
 				supporttext: {
 					contentDefault: '支持',
 					contentFav: '已支持'
@@ -71,15 +71,23 @@
 			topicid: {
 				type: String,
 			},
+			checked:{
+				type:Boolean
+			}
 		},
 		components: {
 			uniFav
 		},
+		
+		computed:{
+			mychecked(){
+				return this.checked
+			}
+		},
 		methods: {
 			/*点击支持*/
 			support() {
-				this.checked = !this.checked
-				let a = {topicid:this.topicid,nickname:this.nickname}
+				this.$emit('success')
 				http.post('/api/Support',{topicid:this.topicid,nickname:this.nickname}).then(res => {
 					console.log(res)
 						uni.showToast({
