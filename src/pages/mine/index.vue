@@ -121,7 +121,7 @@
 					console.log('有新的支持')
 					this.hasNewSupport = true
 				}
-				this.newSupportnum = rea.data
+				this.newSupportnum = res.data
 			},err => {
 				console.log(err)
 			})

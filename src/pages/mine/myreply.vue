@@ -7,7 +7,7 @@
 
 		<view class="content" v-if="myreplyList.length>0">
 
-			<view class="repitem" v-for="(item,index) in myreplyList" :key="index">
+			<view class="repitem" v-for="(item,index) in myreplyList" :key="index" @click="toDetails(item.topicID,item.nickName)">
 				<view class="left">
 					<view class="repobj">
 						<text style="color: #993333;">@{{item.nickName}}</text><text>: {{item.title}}</text>
@@ -48,6 +48,7 @@
 				title: '我的回复',
 				back: 'back',
 				myreplyList: [],
+				nickname:''
 			}
 		},
 		components: {
@@ -60,8 +61,26 @@
 					delta: 1
 				})
 			},
+			/*查看详情*/
+			toDetails(topicid,nickname) {
+				http.post('/api/TreeDetails',{topicid}).then(res => {
+					// console.log(res.data[0])
+					uni.setStorage({
+						key:'topicdetail',
+						data:res.data[0],
+						success: () => {
+							uni.navigateTo({
+							    url: `../../pages/showdetails/details?mynickname=${this.nickname}&topicid=${topicid}&itnickname=${nickname}`
+							})
+						}
+					})
+				},(err) => {
+					console.log(err)
+				})
+			},
 		},
 		onLoad(option) {
+			this.nickname = option.nickname
 			http.post('/api/UserReply', {
 				nickname: option.nickname
 			}).then(res => {

@@ -3,7 +3,7 @@
 		<!--上部分-->
 		<view class="top">
 			<view class="head">
-				<image src="../../static/head-portrait.png" class="headimg"></image>
+				<image src="../static/head-portrait.png" class="headimg"></image>
 			</view>
 			<view class="name">
 				<text style="font-size: 15px;font-weight:800;">{{title}}</text>
@@ -18,7 +18,7 @@
 		<!--下部分-->
 		<view class="function">
 			<view class="reply">
-				<image src="../../static/reply.png" class="replyimg"></image>
+				<image src="../static/reply.png" class="replyimg"></image>
 				<text class="replynum">{{replynum}}</text>
 			</view>
 			<view class="support">

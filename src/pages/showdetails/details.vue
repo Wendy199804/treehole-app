@@ -41,7 +41,7 @@
 			</view>
 		</view>
 		
-		<ygc-comment ref="ygcComment" :placeholder="'发布评论'" @pubComment="pubComment"></ygc-comment>
+		<ygc-comment ref="ygcComment" :placeholder="'发布评论'" :btnword="'发布'" @pubComment="pubComment"></ygc-comment>
 		
 		<view class="reply-func">
 			<view class="rep" @click="reply">

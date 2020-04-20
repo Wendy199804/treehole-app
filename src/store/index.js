@@ -36,15 +36,9 @@ const store = new Vuex.Store({
 						key: 'user',
 						data: res.data[0],
 						success: function() {
-							uni.showToast({
-								title: `${res.data[0].username}，欢迎回来！`,
-								icon: 'none',
-								position: 'bottom',
-								duration: 2000
-							})
-							uni.reLaunch({ //关闭所有页面去首页
-								url: '../home/index'
-							})
+								uni.reLaunch({ //关闭所有页面去首页
+									url: '../home/index'
+								})
 							context.commit('login',res.data[0])
 						}
 					})

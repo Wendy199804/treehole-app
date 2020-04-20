@@ -12,6 +12,7 @@
 			<navigator url="./sign" class="a">注册</navigator>
 		</view>
 		<text class="watermark">From Mao Wennv ®</text>
+		<slider-verify :isShow="sliderVerifyFLag" @touchSliderResult="verifyResult" ref="verifyElement"></slider-verify>
 	</view>
 </template>
 
@@ -26,6 +27,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	import sliderVerify from '../../components/slider-verify.vue'
 
 	export default {
 		data() {
@@ -33,11 +35,13 @@
 				username: '',
 				studentid: '',
 				password: '',
-				logintime:''
+				logintime:'',
+				sliderVerifyFLag: false //滑块验证
 			}
 		},
 		components: {
-			uniPopup
+			uniPopup,
+			'slider-verify': sliderVerify
 		},
 		methods: {
 			login() {
@@ -49,21 +53,33 @@
 						duration: 1500
 					})
 				} else {
-					let data = {
-						username: this.username,
-						password: this.password,
-						number: this.studentid,
-						enable: '普通用户'
-					}
-					console.log(data)
-					this.$store.dispatch('login_asyn', data)
-					uni.setStorage({
-						key: 'logintime',
-						data: this.logintime
-					})
+					this.sliderVerifyFLag = true
+					
 				}
 
 			},
+			 // 滑块验证结果回调函数
+			        verifyResult(res) {
+			            this.sliderVerifyFLag = false;
+			
+			            if (res) {  //校验通过
+									console.log("校验通过")
+									let data = {
+										username: this.username,
+										password: this.password,
+										number: this.studentid,
+										enable: '普通用户'
+									}
+									this.$store.dispatch('login_asyn', data)
+									uni.setStorage({
+										key: 'logintime',
+										data: this.logintime
+									})
+			            }else{
+			                // 校验失败,点击关闭按钮
+											console.log("校验失败")
+			            }
+			        },
 		},
 		mounted() {
 
@@ -107,7 +123,7 @@
 		align-items: center;
 		padding-top: 50rpx;
 		box-sizing: border-box;
-		background-color: #FFFFCC;
+		background-color: #f5f5f5;
 		position: relative;
 
 		.main-icon {

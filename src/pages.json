@@ -119,8 +119,72 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/home/writeLetter", //写信
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/home/receivedLetter", //邮筒
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			} 
+		},
+		{
+			"path": "pages/home/letterBox", //信箱
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/home/timingModal", //水族箱
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/home/timeCapsule", //时间胶囊
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/home/capsuleLog", //历史时间胶囊
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/home/search", //搜索
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/home/robot", //机器人
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
-		
+
 	],
 	"tabBar": {
 		"color":"#777777",

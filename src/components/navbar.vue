@@ -37,11 +37,7 @@
 	export default {
 		data() {
 			return {
-				// lefticon: 'back',
-				// righticon: 'back',
-				// leftwords: '123',
-				// title: '123',
-				// rightwords: '123'
+				
 			}
 		},
 		props: {
@@ -91,7 +87,7 @@
 		.main {
 			width: 100%;
 			height: 88rpx;
-			border-bottom: 1px solid #c8c7cc;
+			border-bottom: 1px solid #eeeeee;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;

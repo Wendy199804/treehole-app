@@ -3,7 +3,7 @@
 		<view class="mask-content"  @click.stop.prevent="stopPrevent">
 			<view class="mask-content-topbar">
 				<view class="left" @click="toggleMask">取消</view>
-				<view class="right" @click="pubComment">发布</view>
+				<view class="right" @click="pubComment">{{btnword}}</view>
 			</view>
 			<view class="mask-content-input">
 				<textarea class="textarea"
@@ -24,6 +24,9 @@
 		//属性
 		props: {
 			placeholder: {
+				type: String
+			},
+			btnword:{
 				type: String
 			}
 		},

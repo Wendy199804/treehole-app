@@ -9,7 +9,7 @@
 		<view class="derec-text">
 			树洞君(。ˇε ˇ。）
 		</view>
-		<button type="default" class="decre-btn" @click="publishArticle">创建树洞</button>
+		<button type="default" class="decre-btn" @click="publishArticle">发布树洞</button>
 	</view>
 </template>
 
@@ -31,7 +31,6 @@
 			return {
 				title: '树洞',
 				back: 'back',
-		
 				bannerList: [],
 				swiperConfig: {
 					indicatorDots: false,
@@ -80,12 +79,9 @@
 		},
 		onLoad(option) {
 			this.mynickname = option.mynickname
-			// http.get('/api/TreeHoleNotName').then(res => {
-			// 	console.log(res)
-			// 	this.bannerList = res.data
-			// 	console.log(this.bannerList)
-			// })
-			
+		},
+		onShow() {
+			console.log('ok')
 			http.get('/api/TreeHoleNotName').then(res1 => {
 				http.post('/api/SupportListNotName', {
 					nickname: this.mynickname
@@ -102,8 +98,7 @@
 					console.log(this.bannerList)
 				})
 			})
-		},
-
+		}
 	}
 </script>
 

@@ -2,19 +2,19 @@
 	<view class="home">
 		<mynavbar :title="title"></mynavbar>
 		<view class="write-module module">
-			<view class="write-item">
+			<view class="write-item" @click="writeLetter">
 				<view class="write-item-icon" style="background-color: #CC9999;">
 					<image src="../../static/write.png" class="icon"></image>
 				</view>
 				<text>写信</text>
 			</view>
-			<view class="write-item">
+			<view class="write-item" @click="receivedLetter">
 				<view class="write-item-icon" style="background-color: #99CCFF;">
 					<image src="../../static/mailbox.png" class="icon"></image>
 				</view>
 				<text>邮筒</text>
 			</view>
-			<view class="write-item">
+			<view class="write-item" @click="checkletterbox">
 				<view class="write-item-icon" style="background-color: #CCCC99;">
 					<image src="../../static/mail.png" class="icon"></image>
 				</view>
@@ -26,21 +26,21 @@
 				<image src="../../static/tree.png" class="icon"></image>
 				<text>树洞</text>
 			</view>
-			<view class="application-module-item">
+			<view class="application-module-item" @click="timingModal">
 				<image src="../../static/fishtank.png" class="icon"></image>
 				<text>水族箱</text>
 			</view>
-			<view class="application-module-item">
+			<view class="application-module-item" @click="timecapsule">
 				<image src="../../static/timecapsule.png" class="icon"></image>
 				<text>时间胶囊</text>
 			</view>
-			<view class="application-module-item">
+			<view class="application-module-item" @click="search">
 				<image src="../../static/search.png" class="icon"></image>
 				<text>搜索</text>
 			</view>
-			<view class="application-module-item" style="margin-top: 40rpx;">
-				<image src="../../static/moreitem.png" class="icon"></image>
-				<text>更多</text>
+			<view class="application-module-item" style="margin-top: 40rpx;" @click="robot">
+				<image src="../../static/robot.png" class="icon"></image>
+				<text>解闷</text>
 			</view>
 		</view>
 
@@ -102,10 +102,56 @@
 		components: {
 			mynavbar,
 			treeholeitem,
-			// mystatusbar
 			uniSegmentedControl
 		},
 		methods: {
+			/*写信*/
+			writeLetter(){
+				uni.navigateTo({
+					url:`./writeLetter?nickname=${this.nickname}`,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
+			/*查看未读的信件-邮筒*/
+			receivedLetter(){
+				uni.navigateTo({
+					url:`./receivedLetter?nickname=${this.nickname}`,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
+			/*查看信箱*/
+			checkletterbox(){
+				console.log("查看信箱")
+				uni.navigateTo({
+					url:`./letterBox?nickname=${this.nickname}`
+				})
+			},
+			/*水族箱*/
+			timingModal(){
+				uni.navigateTo({
+					url:`./timingModal?nickname=${this.nickname}`
+				})
+			},
+			/*时间胶囊*/
+			timecapsule(){
+				uni.navigateTo({
+					url:`./timeCapsule?nickname=${this.nickname}`
+				})
+			},
+			/*搜索*/
+			search(){
+				uni.navigateTo({
+					url:`./search?nickname=${this.nickname}`
+				})
+			},
+			/*机器人 */
+			robot(){
+				uni.navigateTo({
+					url:`./robot?nickname=${this.nickname}`
+				})
+			},
 			/*切换选项卡*/
 			onClickItem(e) {
 				if (this.currenttab !== e.currentIndex) {
@@ -124,12 +170,6 @@
 			},
 			/*获取分类的树洞*/
 			getClassification(num, classes) {
-				// http.post('/api/TreeClass', {
-				// 	class: num
-				// }).then(res => {
-				// 	console.log(res.data)
-				// 	this.tree_articlelist[classes] = res.data
-				// })
 				http.post('/api/TreeClass', {
 					class: num
 				}).then(res1 => {
@@ -177,7 +217,6 @@
 			}
 		},
 		beforeCreate() {
-
 			let date = new Date()
 			let logintime = date.getTime()
 			uni.setStorage({
@@ -188,9 +227,6 @@
 		created() {
 			let userinfo = uni.getStorageSync('user')
 			this.nickname = userinfo.nickname
-			// http.post('/api/SupportList',{nickname:this.nickname}).then(res => {
-			// 	console.log(res.data)
-			// })
 			//预加载
 			http.post('/api/TreeClass', {
 				class: 1
@@ -210,8 +246,38 @@
 					console.log(this.tree_articlelist.moodlist)
 				})
 			})
-
-
+			//
+			uni.showToast({
+				title: `${this.nickname}，欢迎回来！`,
+				icon: 'none',
+				position: 'bottom',
+				duration: 1500
+			})
+			//
+			let date = new Date()
+			let yy = date.getFullYear()
+			let mm = date.getMonth() + 1
+			let dd = date.getDate() + 1
+			let nowdate = `${yy}-${mm}-${dd}`
+			http.post('/api/CapRemind', {
+				nickname: this.nickname,
+				time: nowdate
+			}).then(res => {
+				console.log(res) //
+				if(res.data.length>0){
+					uni.showModal({
+					    title: '提示',
+					    content: '你有时间胶囊可以开启哦',
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+					        } else if (res.cancel) {
+					            console.log('用户点击取消');
+					        }
+					    }
+					});
+				}
+			})
 		},
 	}
 </script>

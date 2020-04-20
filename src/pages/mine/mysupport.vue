@@ -18,9 +18,9 @@
 						阁下还没有支持过任何树洞哦~快去首页看看吧！
 					</view>
 					<view class="swipercard" v-if="!ifnull">
-						<view class="" v-for="item in supportList" :key="item.topicID" @click="toDetails(item.topicID,item.nickName)">
+						<view class="22" v-for="item in supportList" :key="item.topicID">
 							<uni-card :title="item.title" mode="title" :is-shadow="true" thumbnail="../../static/head-portrait.png"
-							 :extra="item.time" :note="item.nickName">
+							 :extra="item.time" :note="item.nickName" @click="toDetails(item.topicID,item.nickName)">
 								<view class="" v-html="item.contentery"></view>
 							</uni-card>
 						</view>
@@ -31,9 +31,9 @@
 						阁下还没有支持过任何树洞哦~快去首页看看吧！
 					</view>
 					<view class="swipercard" v-if="!ifnull">
-						<view class="" v-for="item in supportnonameList" :key="item.topicID" @click="toDetails(item.topicID,item.nickName)">
+						<view class="" v-for="item in supportnonameList" :key="item.topicID">
 							<uni-card :title="item.title" mode="title" :is-shadow="true" thumbnail="../../static/head-portrait.png"
-							 :extra="item.time" :note="item.nickName">
+							 :extra="item.time" :note="item.nickName" @click="toDetails(item.topicID,item.nickName)">
 								<view class="" v-html="item.contentery"></view>
 							</uni-card>
 						</view>
@@ -84,6 +84,7 @@
 			},
 			/*查看详情*/
 			toDetails(topicid,nickname) {
+				console.log("???????????????")
 				http.post('/api/TreeDetails',{topicid}).then(res => {
 					// console.log(res.data[0])
 					uni.setStorage({

@@ -5,7 +5,7 @@
 			阁下的树洞还没有被支持过呢！但是别灰心哦~
 		</view>
 		<view class="supportcard" v-if="supportList.length>0">
-			<view class="card-item" v-for="(item,index) in supportList" :key="index">
+			<view class="card-item" v-for="(item,index) in supportList" :key="index" @click="toDetails(item.topicID,item.nickName)">
 				<view class="supportcard-top">
 					<text style="font-size: 16px;"><uni-icons type="paperplane" size="24"></uni-icons> {{item.nickName}}</text>
 					<text style="font-size: 12px;color: #999999;">{{item.createdOn}}</text>
@@ -49,6 +49,25 @@
 			Back(){
 				uni.navigateBack({
 					delta: 1
+				})
+			},
+			/*查看详情*/
+			toDetails(topicid, nickname) {
+				http.post('/api/TreeDetails', {
+					topicid
+				}).then(res => {
+					console.log(res.data[0])
+					uni.setStorage({
+						key: 'topicdetail',
+						data: res.data[0],
+						success: () => {
+							uni.navigateTo({
+								url: `../../pages/showdetails/details?mynickname=${this.mynickname}&topicid=${topicid}&itnickname=${nickname}`
+							})
+						}
+					})
+				}, (err) => {
+					console.log(err)
 				})
 			},
 		},
