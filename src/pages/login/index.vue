@@ -123,7 +123,8 @@
 		align-items: center;
 		padding-top: 50rpx;
 		box-sizing: border-box;
-		background-color: #f5f5f5;
+		// background-color: #f5f5f5;
+		background-color: #FFFFFF;
 		position: relative;
 
 		.main-icon {
@@ -132,7 +133,8 @@
 		}
 
 		.input-group {
-
+			margin-top: 50rpx;
+			
 			.stdid-input,
 			.username-input,
 			.psw-input {

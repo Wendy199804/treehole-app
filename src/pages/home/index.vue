@@ -46,7 +46,11 @@
 
 		<view class="public-article-module module">
 			<text class="module-name">公开的树洞</text>
-			<uni-segmented-control :current="currenttab" :values="tabitems" @clickItem="onClickItem" style-type="text"
+			<view class="" v-if="!loading" style="text-align: center;">
+				<image src="../../static/loading.gif" style="width: 70rpx;height: 70rpx;"></image>
+			</view>
+			<view class="" v-if="loading">
+				<uni-segmented-control :current="currenttab" :values="tabitems" @clickItem="onClickItem" style-type="text"
 			 active-color="#003300" class="tabnav"></uni-segmented-control>
 			<view class="content">
 				<view v-show="currenttab === 0">
@@ -70,6 +74,9 @@
 					 :topicid="item.topicID" :checked="item.flag" @success="item.flag=!item.flag"></treeholeitem>
 				</view>
 			</view>
+			</view>
+			
+			
 		</view>
 	</view>
 </template>
@@ -97,6 +104,7 @@
 					secretlist: [], //秘密
 				},
 				nickname: '', //当前nickname
+				loading:false
 			}
 		},
 		components: {
@@ -170,6 +178,7 @@
 			},
 			/*获取分类的树洞*/
 			getClassification(num, classes) {
+				this.loading = false
 				http.post('/api/TreeClass', {
 					class: num
 				}).then(res1 => {
@@ -182,10 +191,12 @@
 									return item1
 							})
 							this.tree_articlelist[classes] = newarr1
+							this.loading = true
 						}else{
 							this.tree_articlelist[classes] = res1.data
+							this.loading = true
 						}
-						console.log(this.tree_articlelist[classes])
+						// console.log(this.tree_articlelist[classes])
 					})
 				})
 			},
@@ -194,7 +205,7 @@
 				http.post('/api/TreeDetails', {
 					topicid
 				}).then(res => {
-					console.log(res.data[0])
+					// console.log(res.data[0])
 					uni.setStorage({
 						key: 'topicdetail',
 						data: res.data[0],
@@ -225,25 +236,33 @@
 			})
 		},
 		created() {
+			console.log("created")
 			let userinfo = uni.getStorageSync('user')
 			this.nickname = userinfo.nickname
 			//预加载
 			http.post('/api/TreeClass', {
 				class: 1
 			}).then(res1 => {
+				// console.log(res1.data)
 				http.post('/api/SupportList', {
 					nickname: this.nickname
 				}).then(res2 => {
+					// console.log(res2.data)
 					if (res2.data.length !== 0) {
 						let newarr1 = res1.data.map(item1 => {
 							item1.flag = res2.data.some(item2 => item1.topicID === item2.topicID) 
+							console.log(item1.flag)
 								return item1
 						})
 						this.tree_articlelist.moodlist = newarr1
+						// console.log("不空")
+						this.loading = true
 					}else{
 						this.tree_articlelist.moodlist = res1.data
+						// console.log("空")
+						this.loading = true
 					}
-					console.log(this.tree_articlelist.moodlist)
+					// console.log(this.tree_articlelist.moodlist)
 				})
 			})
 			//
@@ -263,7 +282,7 @@
 				nickname: this.nickname,
 				time: nowdate
 			}).then(res => {
-				console.log(res) //
+				// console.log(res) //
 				if(res.data.length>0){
 					uni.showModal({
 					    title: '提示',

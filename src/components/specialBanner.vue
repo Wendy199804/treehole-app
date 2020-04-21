@@ -32,6 +32,7 @@
 							<view class="support">
 								<uni-fav :checked="item.flag" class="favBtn" circle="true" bg-color="#eeeeee" fg-color="#666666" fg-color-checked="#ffffff"
 								 bg-color-checked="#EF5656" @click.native.stop="support(item.topicID,i)" :content-text="supporttext"></uni-fav>
+								
 							</view>
 						</view>
         </view>
@@ -101,7 +102,7 @@ export default {
 				contentDefault: '支持',
 				contentFav: '已支持'
 			}, //支持文字
-			checked:false,
+			// checked:false,
 			
     }
   },
@@ -132,6 +133,7 @@ export default {
 		/*点击支持*/
 		support(topicid,index) {
 			// this.checked = !this.checked
+			console.log(this.bannerList)
 			this.$emit('succeed',index)
 			http.post('/api/Support',{topicid,nickname:this.mynickname}).then(res => {
 				console.log(res)
@@ -150,7 +152,8 @@ export default {
 				})
 			})
 		},
-  }
+  },
+	
 }
 </script>
 <style lang="scss" scoped>

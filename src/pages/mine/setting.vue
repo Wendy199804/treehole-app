@@ -68,6 +68,11 @@
 					success: function(res) {
 						if (res.confirm) {
 							console.log('用户点击确定');
+							 uni.removeStorageSync('logintime');
+							 uni.removeStorageSync('user');
+							 uni.reLaunch({
+							     url: '../login/index'
+							 });
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}

@@ -29,7 +29,7 @@
 			</view>
 			<view class="inpt">
 				<view class="label">请输入学号</view>
-				<input type="number" placeholder="..." v-model="studentid" @blur="validation(replyname,'学号只能由数字组成','number')" />
+				<input type="number" placeholder="..." v-model="studentid" @blur="validation(studentid,'学号只能由数字组成','number')" />
 			</view>
 			<view class="inpt" style="margin-top:40rpx">
 				<uni-combox label="请选择性别" :candidates="candidates" placeholder="..." v-model="sex"></uni-combox>
@@ -114,7 +114,7 @@
 							this.replynamecheck = true
 						}
 					}
-				} else if (type == "number") {
+				}else if (type == "number") {
 					if (!num_reg.test(obj)) {
 						uni.showToast({
 							title: tip,

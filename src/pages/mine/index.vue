@@ -16,7 +16,7 @@
 		<uni-list style="margin-bottom: 30rpx;">
 			<uni-list-item title="收获的支持" @click="clickGetsupport" showExtraIcon="true" 
 			:extraIcon="{color: '#003300',size: '22',type: 'heart'}" :show-badge="hasNewSupport" 
-			badge-text="newSupportnum" badgeType="error"></uni-list-item>
+			:badge-text="newSupportnum" badgeType="error"></uni-list-item>
 		</uni-list>
 		<uni-list>
 			<uni-list-item title="送出的支持" @click="clickSetsupport" showExtraIcon="true" :extraIcon="{color: '#003300',size: '22',type: 'star'}"></uni-list-item>
@@ -117,11 +117,11 @@
 				if(res.data == 0){
 					console.log('没有新的支持')
 					this.hasNewSupport = false
-				}else if(res.data > 0){
+				}else {
 					console.log('有新的支持')
 					this.hasNewSupport = true
+					this.newSupportnum = res.data
 				}
-				this.newSupportnum = res.data
 			},err => {
 				console.log(err)
 			})

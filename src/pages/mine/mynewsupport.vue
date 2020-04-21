@@ -1,7 +1,7 @@
 <template>
 	<view class="mynewsupport">
 		<mynavbar :title="title" :lefticon="back" @leftEvent="Back"></mynavbar>
-		<view class="ifnull" v-if="supportList.length==0">
+		<view class="ifnull" v-if="supportList.length==0" style="font-size: 14px;text-align: center;margin-top: 30rpx;">
 			阁下的树洞还没有被支持过呢！但是别灰心哦~
 		</view>
 		<view class="supportcard" v-if="supportList.length>0">

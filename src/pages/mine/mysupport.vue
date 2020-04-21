@@ -115,7 +115,7 @@
 			http.post('/api/SupportList', {
 				nickname: option.nickname
 			}).then(res => {
-				// console.log(res) //支持的公开树洞
+				console.log(res) //支持的公开树洞
 				this.supportList = res.data
 				if (res.data.length == 0) {
 					this.ifnull = true

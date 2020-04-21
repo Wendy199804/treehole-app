@@ -23,7 +23,7 @@
 		SwiperSlide,
 		directive
 	} from 'vue-awesome-swiper'
-	import 'swiper/css/swiper.css'
+	// import 'swiper/css/swiper.css'
 	import specialbanner from '../../components/specialBanner.vue'
 
 	export default {
@@ -81,7 +81,6 @@
 			this.mynickname = option.mynickname
 		},
 		onShow() {
-			console.log('ok')
 			http.get('/api/TreeHoleNotName').then(res1 => {
 				http.post('/api/SupportListNotName', {
 					nickname: this.mynickname
@@ -95,7 +94,6 @@
 					}else{
 						this.bannerList = res1.data
 					}
-					console.log(this.bannerList)
 				})
 			})
 		}
