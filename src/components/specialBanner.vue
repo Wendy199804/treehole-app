@@ -1,5 +1,6 @@
 <template>
   <view class="banner-container">
+		
     <swiper :style="{width: '100vw', height: '620rpx'}" 
       :indicator-dots="swiperConfig.indicatorDots" 
       :indicator-color="swiperConfig.indicatorColor" 
@@ -17,6 +18,7 @@
 		<!-- 2.当前展示为最后一项时，bannerList倒数第2项和第1项的justifyContent值分别为flex-end和flex-start，其余项值为center -->
 		<!-- 3.当前展示为其他项（非第1和最后1项）时，bannerList当前项的前1项和后1项的justifyContent值分别为flex-end和flex-start，其余项值为center -->
 		<!-- 4.padding值也需要根据不同项设定不同值，但理同justifyContent -->
+		
         <view class="image-container" 
 			:class="[curIndex===0?((i===listLen-1)?'item-left':(i===1?'item-right':'item-center')):(curIndex===listLen-1?(i===0?'item-right':(i===listLen-2?'item-left':'item-center')):(i===curIndex-1?'item-left':(i===curIndex+1?'item-right':'item-center')))]">
           <view
@@ -30,6 +32,7 @@
 							<text class="title">{{item.title}}</text>
 							<view class="desc" v-html="item.contentery"></view>
 							<view class="support">
+								
 								<uni-fav :checked="item.flag" class="favBtn" circle="true" bg-color="#eeeeee" fg-color="#666666" fg-color-checked="#ffffff"
 								 bg-color-checked="#EF5656" @click.native.stop="support(item.topicID,i)" :content-text="supporttext"></uni-fav>
 								

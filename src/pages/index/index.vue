@@ -31,17 +31,49 @@
 				indicatorDots: true,
 				autoplay: true,
 				interval: 2000,
-				duration: 500
+				duration: 500,
+				timer:null
 			}
 		},
 		onLoad() {
 
 		},
 		onShow() {
-			setTimeout(() => {
-				uni.navigateTo({
-					url: '../login/index'
-				})
+			let stup = 86400000 * 3 //三天
+			let date = new Date()
+			let logintime = date.getTime()
+			this.logintime = logintime
+			
+			this.timer = setTimeout(() => {
+				// uni.reLaunch({
+				// 	url: '../login/index'
+				// })
+				
+				
+				if (uni.getStorageSync('user')) {
+					//以前登录过
+					console.log('以前登录过')
+					if (logintime - uni.getStorageSync('logintime') > stup) {
+						//重新登录
+						console.log('重新登录')
+						uni.reLaunch({
+							url: '../login/index'
+						})
+					} else {
+						//无需登录
+						console.log('无需登录')
+						uni.reLaunch({
+							url: '../home/index'
+						})
+					}
+				} else {
+					//没有登录过
+					//要登录
+					console.log('第一次登录')
+					uni.reLaunch({
+						url: '../login/index'
+					})
+				}
 			}, 6000)
 		},
 		methods: {
@@ -58,10 +90,40 @@
 				this.duration = e.target.value
 			},
 			next() {
-				uni.navigateTo({
-					url: '../login/index'
-				})
-			}
+				clearTimeout(this.timer)
+				// uni.reLaunch({
+				// 	url: '../login/index'
+				// })
+				
+				let stup = 86400000 * 3 //三天
+				let date = new Date()
+				let logintime = date.getTime()
+				this.logintime = logintime
+				if (uni.getStorageSync('user')) {
+					//以前登录过
+					console.log('以前登录过')
+					if (logintime - uni.getStorageSync('logintime') > stup) {
+						//重新登录
+						console.log('重新登录')
+						uni.reLaunch({
+							url: '../login/index'
+						})
+					} else {
+						//无需登录
+						console.log('无需登录')
+						uni.reLaunch({
+							url: '../home/index'
+						})
+					}
+				} else {
+					//没有登录过
+					//要登录
+					console.log('第一次登录')
+					uni.reLaunch({
+						url: '../login/index'
+					})
+				}
+			},
 		}
 	}
 </script>

@@ -86,28 +86,28 @@
 
 		},
 		created() {
-			let stup = 86400000 * 3 //三天
-			let date = new Date()
-			let logintime = date.getTime()
-			this.logintime = logintime
-			if (uni.getStorageSync('user')) {
-				//以前登录过
-				console.log('以前登录过')
-				if (logintime - uni.getStorageSync('logintime') > stup) {
-					//重新登录
-					console.log('重新登录')
-				} else {
-					//无需登录
-					console.log('无需登录')
-					uni.switchTab({
-						url: '../home/index'
-					})
-				}
-			} else {
-				//没有登录过
-				//要登录
-				console.log('第一次登录')
-			}
+			// let stup = 86400000 * 3 //三天
+			// let date = new Date()
+			// let logintime = date.getTime()
+			// this.logintime = logintime
+			// if (uni.getStorageSync('user')) {
+			// 	//以前登录过
+			// 	console.log('以前登录过')
+			// 	if (logintime - uni.getStorageSync('logintime') > stup) {
+			// 		//重新登录
+			// 		console.log('重新登录')
+			// 	} else {
+			// 		//无需登录
+			// 		console.log('无需登录')
+			// 		uni.switchTab({
+			// 			url: '../home/index'
+			// 		})
+			// 	}
+			// } else {
+			// 	//没有登录过
+			// 	//要登录
+			// 	console.log('第一次登录')
+			// }
 		}
 
 	}

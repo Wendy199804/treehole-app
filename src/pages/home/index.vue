@@ -251,7 +251,7 @@
 					if (res2.data.length !== 0) {
 						let newarr1 = res1.data.map(item1 => {
 							item1.flag = res2.data.some(item2 => item1.topicID === item2.topicID) 
-							console.log(item1.flag)
+							// console.log(item1.flag)
 								return item1
 						})
 						this.tree_articlelist.moodlist = newarr1

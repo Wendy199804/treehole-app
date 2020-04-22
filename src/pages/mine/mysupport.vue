@@ -20,7 +20,7 @@
 					<view class="swipercard" v-if="!ifnull">
 						<view class="22" v-for="item in supportList" :key="item.topicID">
 							<uni-card :title="item.title" mode="title" :is-shadow="true" thumbnail="../../static/head-portrait.png"
-							 :extra="item.time" :note="item.nickName" @click="toDetails(item.topicID,item.nickName)">
+							 :extra="item.time" :note="item.authorName" @click="toDetails(item.topicID,item.nickName)">
 								<view class="" v-html="item.contentery"></view>
 							</uni-card>
 						</view>
