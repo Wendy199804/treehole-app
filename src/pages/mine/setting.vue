@@ -30,7 +30,6 @@
 		http
 	} from '../../utils/index.js'
 
-
 	export default {
 		data() {
 			return {
@@ -100,13 +99,15 @@
 						uni.showModal({
 							title: '提示',
 							content: '修改密码是不可逆操作，确定修改吗？',
-							success: function(res) {
+							success: (res) => {
 								if (res.confirm) {
-									http.post('api/ResetPass', {
+									this.$refs.popup.close()
+									http.post('/api/ResetPass', {
 										nickname: this.nickname,
-										assword: this.oldpsw,
+										password: this.oldpsw,
 										conpassword: this.newpsw
 									}).then(res => {
+										console.log(res)
 										if (res.data === 'success') {
 											uni.showToast({
 												title: `修改成功！你的新密码是：${this.newpsw}`,
@@ -125,6 +126,7 @@
 									})
 								} else if (res.cancel) {
 									console.log('用户点击取消');
+									this.$refs.popup.close()
 								}
 							}
 						})

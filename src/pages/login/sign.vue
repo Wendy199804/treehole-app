@@ -171,20 +171,38 @@
 								password:this.password,
 								sex:this.sex
 							}
+							console.log("okok")
+							console.log(params)
+							
 							http.post('/api/insertUser',params).then(res => {
-								if(res.data == 'success'){
+								console.log(res.data)
+								if(res.data[0].success == 'success'){
 									uni.showToast({
-										title: '注册成功，请前往登录',
-										icon: 'none',
+										title: '成功',
+										icon: 'success',
 										position: 'bottom',
 										duration: 1500
 									})
 									setTimeout(()=>{
 										uni.reLaunch({
-										    url: './index'
+										    url: `./index?username=${this.username}`
 										});
 									},1500)
+								}else{
+									uni.showToast({
+										title: res.data[0].error,
+										icon: 'none',
+										position: 'bottom',
+										duration: 1500
+									})
 								}
+							}).catch(err => {
+								uni.showToast({
+									title: '联网失败',
+									icon: 'none',
+									position: 'bottom',
+									duration: 1500
+								})
 							})
 						}else{
 							uni.showToast({

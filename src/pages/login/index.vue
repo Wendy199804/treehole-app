@@ -61,7 +61,6 @@
 			 // 滑块验证结果回调函数
 			        verifyResult(res) {
 			            this.sliderVerifyFLag = false;
-			
 			            if (res) {  //校验通过
 									console.log("校验通过")
 									let data = {
@@ -81,8 +80,10 @@
 			            }
 			        },
 		},
-		mounted() {
-
+		onLoad(option) {
+		if(option.username){
+			this.username = option.username
+		}
 
 		},
 		created() {

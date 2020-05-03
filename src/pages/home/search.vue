@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<mynavbar :title="title" :lefticon="'back'" @leftEvent="Back"></mynavbar>
 		<view class="search-box">
 			<view class="input-box">
 				<input type="text" :adjust-position="true" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword"
@@ -9,6 +10,7 @@
 			<view class="search-btn" @click="Back" style="background-color: #9999CC;">取消</view>
 
 		</view>
+		<view v-if="treeitemlist.length == 0" style="text-align: center;font-size: 14px;margin-top: 40rpx;">无数据</view>
 		<view class="search-keyword">
 			<view class="" v-show="!itemlist">
 				<scroll-view class="keyword-list-box" v-show="isShowKeywordList" scroll-y>
@@ -25,6 +27,7 @@
 
 				</scroll-view>
 				<scroll-view class="keyword-box" v-show="!isShowKeywordList" scroll-y>
+					
 					<view class="keyword-block" v-if="oldKeywordList.length>0">
 						<view class="keyword-list-header">
 							<view>历史搜索</view>
@@ -47,7 +50,7 @@
 					</view>
 					<view style="color: #333333;font-size: 14px;border-bottom: 1px solid #EEEEEE;border-top: 1px solid #EEEEEE;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
 						{{item.contentery}}
-						的方式发送大苏打大师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付师傅士大夫犯得上房贷首付
+						
 					</view>
 					<view style="color: #999999;font-size: 12px;text-align: right;margin-top: 10rpx;">
 						{{item.nickName}}
@@ -62,6 +65,7 @@
 <script>
 	//引用mSearch组件，如不需要删除即可
 	import mSearch from '../../components/mehaotian-search-revision.vue';
+	import mynavbar from '../../components/navbar.vue'
 	import {
 		http
 	} from '../../utils/index.js'
@@ -69,6 +73,7 @@
 	export default {
 		data() {
 			return {
+				title: '搜索',
 				defaultKeyword: "",
 				keyword: "",
 				oldKeywordList: [],
@@ -85,7 +90,9 @@
 			this.nickname = option.nickname
 			this.init();
 		},
-		components: {},
+		components: {
+			mynavbar
+		},
 		methods: {
 			/*返回上一页*/
 			Back() {
@@ -151,6 +158,7 @@
 					selectv: keyword
 				}).then(res => {
 					console.log(res.data)
+					
 					this.treeitemlist = res.data
 					this.keywordList = [];
 					let titlearr = []

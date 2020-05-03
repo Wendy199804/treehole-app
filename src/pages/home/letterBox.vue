@@ -1,6 +1,9 @@
 <template>
 	<view class="letterbox">
 		<mynavbar :title="title" :lefticon="'back'" @leftEvent="Back"></mynavbar>
+		<view class="" v-if="letterlist.length == 0" style="text-align: center;margin-top: 30rpx;font-size: 14px;">
+			别想了！没人给你写信 ~
+		</view>
 		<view class="swiper">
 			<view class="uni-padding-wrap">
 				<view class="page-section swiper">

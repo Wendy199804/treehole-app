@@ -139,7 +139,7 @@
 			text-align: center;
 			font-size: 16px;
 			position: absolute;
-			top: 30rpx;
+			top: 50rpx;
 			right: 30rpx;
 			z-index: 300;
 			background-color: rgba(225, 225, 225, 0.6);

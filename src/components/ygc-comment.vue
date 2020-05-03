@@ -28,7 +28,8 @@
 			},
 			btnword:{
 				type: String
-			}
+			},
+		
 		},
 		data() {
 			return {

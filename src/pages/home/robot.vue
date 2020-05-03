@@ -2,35 +2,35 @@
 	<view class="robot">
 		<mynavbar :title="title" :lefticon="'back'" @leftEvent="Back"></mynavbar>
 		<scroll-view :scroll-top="scrollTop" scroll-y="true" @scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll" 
-		style="background-color: #f5f5f5;padding-bottom: 100rpx;">
+		style="background-color: #f5f5f5;padding-bottom: 100rpx;height:100vh;transition: height 0.3s;padding-top: 59px;box-sizing: border-box;" class="scrollview">
 			
 			<view class="conversation" v-for="(item,index) in dialoguearr" :key="index">
 				<view class="send" v-if="item.mysend">
 					<text class="sendtime">
 						{{item.mysendtime}}
 					</text>
-					<text class="sendcontent">
+					<view class="sendcontent">
 						<view class="sendtriangle"></view>
 						{{item.mysend}}
-					</text>
+					</view>
 				</view>
 				<view class="received" v-if="item.myreceived">
 					<text class="rectime">
 						{{item.myrectime}}
 					</text>
-					<text class="reccontent">
+					<view class="reccontent">
 						<view class="rectriangle"></view>
 						{{item.myreceived}}
-					</text>
+					</view>
 				</view>
 
 			</view>
 		</scroll-view>
 		<view class="reply">
-			<input type="text" placeholder="请输入..." v-model="sendvalue" @click="post" class="replyinput"/>
+			<input type="text" placeholder="请输入..." disabled="disabled" @click="post" class="replyinput"/>
 			<button type="default" disabled="disabled" class="sendbtn">发送</button>
 		</view>
-		<ygc-comment ref="ygcComment" :placeholder="'请输入...'" :btnword="'发送'" @pubComment="send"></ygc-comment>
+		<ygc-comment ref="ygcComment" :placeholder="'请输入...'" :btnword="'发送'" @pubComment="send" ></ygc-comment>
 	</view>
 </template>
 
@@ -51,7 +51,8 @@
 				scrollTop: 0,
 				old: {
 					scrollTop: 0
-				}
+				},
+				inputvalue:'',
 			}
 		},
 		components: {
@@ -66,6 +67,8 @@
 				})
 			},
 			send(value) {
+				console.log(value)
+				this.$refs.ygcComment.toggleMask('close')
 				let date = new Date()
 				let yy1 = date.getFullYear()
 				let mm1 = (date.getMonth() + 1).toString()
@@ -82,11 +85,13 @@
 				let nowsendtime = `${yy1}-${mm1}-${dd1} ${hour1}:${munite1}:${second1}`
 				this.dialoguearr.push({
 					mysendtime: nowsendtime,
-					mysend: this.sendvalue,
+					mysend: value,
 				})
+				console.log(value)
+				this.scrollTop = this.scrollTop + 100
 				setTimeout(()=> {
 					uni.request({
-						url: `http://www.tuling123.com/openapi/api?key=ea5857afeaa1434f8fccb51991e12eff&info=${this.inputvalue}`,
+						url: `http://www.tuling123.com/openapi/api?key=ea5857afeaa1434f8fccb51991e12eff&info=${value}`,
 						success: (res) => {
 							let yy = date.getFullYear()
 							let mm = (date.getMonth() + 1).toString()
@@ -106,15 +111,18 @@
 								myreceived: res.data.text
 							})
 							console.log(this.dialoguearr)
+							this.scrollTop = this.scrollTop + 100
+							// console.log(this.scrollTop)
 						}
 					})
-				},500)
+				},1000)
 			},
 			upper: function(e) {
 				console.log(e)
 			},
 			lower: function(e) {
 				console.log(e)
+				
 			},
 			scroll: function(e) {
 				console.log(e)
@@ -164,11 +172,16 @@
 </script>
 
 <style lang="scss">
+	$height : 100rpx;
 	.robot {
 		background-color: #f5f5f5;
 		// background-color: red;
 		height: 100vh;
 		font-size: 14px;
+		
+		.scrollview{
+			height : calc(100vh- $height)
+		}
 
 		.conversation{
 			padding-top: 20rpx;
@@ -253,7 +266,7 @@
 		}
 		
 		.reply{
-			height: 100rpx;
+			height: $height;
 			width: 100vw;
 			background-color: #f5f5f5;
 			border-top: 1px solid #CCCCCC;

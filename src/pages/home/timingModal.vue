@@ -10,12 +10,12 @@
 			</view>
 			<view class="list">
 				<view class="list-item" v-for="item in list" :key="item.order" @click="toWrite(item.userID)">
-					<view class="orderimg">
-						<image :src="item.orderimg" class="image"></image>
+					<view class="orderimg" :style="{background: `url(${item.orderimg}) no-repeat center` }">
+						<!-- <image :src="item.orderimg" class="image"></image> -->
 					</view>
 					<view class="item-main">
-						<view class="item-head">
-							<image src="../../static/head-portrait.png" class="image"></image>
+						<view class="item-head" style="background:url(../../static/head-portrait.png) no-repeat center;">
+							<!-- <image src="../../static/head-portrait.png" class="image"></image> -->
 						</view>
 						<view class="list-item-main">
 							<text style="font-size: 14px;">{{item.nickname}}</text>
@@ -46,7 +46,12 @@
 				title: '水族箱',
 				timelog: '0',
 				timer: '',
-				list: ''
+				list: '',
+		jinp:'../../static/jinp.png',
+		yinp:'../../static/yinp.png',
+		tongp:'../../static/tongp.png',
+		forth:'../../static/forth.png',
+		fifth:'../../static/fifth.png'
 			}
 		},
 		components: {
@@ -76,22 +81,21 @@
 			http.get('/api/AquariumList').then(res => {
 				console.log(res)
 				
-				this.list = res.data.map(item => {
-					if (item.aquserID == 1) {
-						item.orderimg = jinp
+				this.list = res.data.map((item,index) => {
+					if (index == 0) {
+						item.orderimg = this.jinp
 						item.msg = '当你遇到一生挚爱时，鱼是停止的'
-						
-					} else if (item.aquserID == 2) {
-						item.orderimg = yinp
+					} else if (index == 1) {
+						item.orderimg = this.yinp
 						item.msg = '发呆不在我的计划中，只是刚好发生'
-					} else if (item.aquserID == 3) {
-						item.orderimg = tongp
+					} else if (index == 2) {
+						item.orderimg = this.tongp
 						item.msg = '你看，那个人好像一条鱼诶'
-					} else if (item.aquserID == 4) {
-						item.orderimg = forth
+					} else if (index == 3) {
+						item.orderimg = this.forth
 						item.msg = '时过境迁，发呆依旧'
-					} else if (item.aquserID == 5) {
-						item.orderimg = fifth
+					} else if (index == 4) {
+						item.orderimg = this.fifth
 						item.msg = '如果你依然坚持，那么我也一样'
 					}
 
@@ -157,8 +161,8 @@
 				align-items: center;
 				border-bottom: 1px sold #eeeeee;
 				.orderimg{
-					width: 60rpx;
-					height: 60rpx;
+					width: 76rpx;
+					height: 76rpx;
 				}
 				.item-main{
 					width: 95%;

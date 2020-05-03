@@ -120,16 +120,14 @@
 			http.post('/api/SupportFlag',{nickname:this.userinfo.nickname}).then(res => {
 				console.log(res)
 				if(res.data == 0){
-					console.log('没有新的支持')
+					// console.log('没有新的支持')
 					this.hasNewSupport = false
 				}else {
-					console.log('有新的支持')
+					// console.log('有新的支持')
 					this.hasNewSupport = true
 					
 				}
 				this.newSupportnum = res.data.toString()
-				console.log(this.hasNewSupport)
-				console.log(this.newSupportnum)
 			},err => {
 				console.log(err)
 			})

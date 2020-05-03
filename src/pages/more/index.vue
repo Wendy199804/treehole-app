@@ -3,6 +3,11 @@
 		<mynavbar :title="title"></mynavbar>
 		<!--轮播图-->
 		<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+			<!-- <swiper-item>
+				<view class="swiper-item">
+					<image src="../../static/app1.png" class="image"></image>
+				</view>
+			</swiper-item> -->
 			<swiper-item>
 				<view class="swiper-item">
 					<image src="../../static/app2.png" class="image"></image>

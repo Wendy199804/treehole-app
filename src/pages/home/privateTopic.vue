@@ -3,13 +3,14 @@
 		<mynavbar :title="title" :lefticon="back" @leftEvent="Back"></mynavbar>
 		<view class="swiperbox">
 			<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-				<swiper-item v-for="(item, index) in bannerList" :key="index">
+				<swiper-item v-for="(item, index) in bannerList" :key="item.topicID">
 					<view class="image-container">
 						<view class="slide-image" @click="getBannerDetail(item.topicID)">
 							<text class="title">{{item.title}}</text>
 							<view class="desc" v-html="item.contentery"></view>
 							<view class="support">
-								
+								<!-- <image src="../../static/like.png" v-if="item.flag" @click.native.stop="support(item.topicID,index)" style="width: 60rpx;height:60rpx"></image> -->
+								<!-- <image src="../../static/like-no.png" v-if="!item.flag" @click.native.stop="support(item.topicID,index)" style="width: 60rpx;height:60rpx"></image> -->
 								 <!-- <uni-icons type="heart-filled" size="30" color="#EF5656" v-if="item.flag" @click.native.stop="support(item.topicID,index)"></uni-icons> -->
 								 <uni-icons :type="item.flag ? 'heart-filled': 'heart' " size="30" color="#EF5656"  @click.native.stop="support(item.topicID,index)"></uni-icons>
 							</view>
@@ -82,7 +83,7 @@
 
 			support(topicid, index) {
 				// this.checked = !this.checked
-				console.log(this.bannerList)
+				console.log(index)
 				this.bannerList[index].flag = !this.bannerList[index].flag
 				http.post('/api/Support', {
 					topicid,

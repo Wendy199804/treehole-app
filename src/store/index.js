@@ -10,6 +10,7 @@ const store = new Vuex.Store({
 	state: {
 		a: "11221",
 		userinfo:'',//保存登录后的用户信息
+		dialoguearr: [],//机器人对话信息
 	},
 	mutations: {
 		/*登录*/
@@ -24,7 +25,7 @@ const store = new Vuex.Store({
 			
 			http.post('/api/User', params).then(res => {
 				console.log(res.data)
-				if (res.data.length == 0) { //接口没准备好才这么写的！！要记得改成  !==0
+				if (res.data.length == 0) { 
 					uni.showToast({
 						title: '用户名密码有误',
 						icon: 'none',

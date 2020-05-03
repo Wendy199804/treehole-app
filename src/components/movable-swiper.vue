@@ -59,14 +59,17 @@
 			    immediate: true
 			} 
 		},
+		
 		methods:{
 			movInit(){
 				let _nowId = this.movList.filter(item => item.indexClass.indexOf('four') != -1)[0].id;
-				if(this.dataList.length == 0){
-					uni.showToast({
-						icon:'none',
-						title:'无数据',
-					})
+				console.log(Array.from(this.dataList))
+				console.log(Array.from(this.dataList).length)
+				if(Array.from(this.dataList).length == 0){
+					// uni.showToast({
+					// 	icon:'none',
+					// 	title:'无数据',
+					// })
 				}else{
 					this.dataIndex = 0;
 					this.movList[_nowId].data = this.dataList[this.dataIndex];
